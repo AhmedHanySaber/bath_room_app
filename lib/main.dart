@@ -1,8 +1,17 @@
-import 'package:bath_room_app/constants/colours/colours.dart';
-import 'package:bath_room_app/routing/router.dart';
-import 'package:flutter/material.dart';
 
-void main() {
+import 'package:bath_room_app/core/network/api_service.dart';
+import 'package:bath_room_app/presantion/home/widgets/navigation.dart';
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
+import 'core/colors/colours.dart';
+import 'core/controllers/home/home_controller.dart';
+import 'core/routing/router.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+  await ApiService.init();
   runApp(const MyApp());
 }
 
@@ -14,22 +23,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        scaffoldBackgroundColor: background,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => HomeController(),lazy: true,)
+      ],
+      child: MaterialApp(
+        title: 'coffee bathroom',
+        theme: ThemeData(
+          scaffoldBackgroundColor: ConstantsColors.background,
+        ),
+        onGenerateRoute: Routes.onGenerateRoute,
+        home: const NavigationBarConfig(),
       ),
-      initialRoute: '/',
-      onGenerateRoute: AppRouter.router.generator,
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    AppRouter.setupRouter();
   }
 }

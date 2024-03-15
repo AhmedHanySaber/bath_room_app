@@ -1,57 +1,72 @@
-
-import 'package:bath_room_app/constants/colours/colours.dart';
+import 'package:bath_room_app/core/colors/colours.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  final Color fillColor;
   final String hintText;
-  final IconData icon;
+  final IconData? suffixIcon;
+  final IconData? prefixIcon;
+  final String? Function(String?)? validator;
+  final TextEditingController? controller;
+  final bool obscure;
+  final void Function(String)? onChanged;
+  final void Function()? onTap;
+  final bool? readOnly;
 
   const CustomTextField({
-    Key? key,
-    required this.fillColor,
+    super.key,
     required this.hintText,
-    required this.icon,
-  }) : super(key: key);
+    this.suffixIcon,
+    this.validator,
+    this.controller,
+    this.obscure = false,
+    this.onChanged,
+    required this.prefixIcon,
+    this.readOnly = false,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double iconSize = screenWidth * 0.06;
+    double iconSize = screenWidth * 0.07;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: fillColor,
-        borderRadius: BorderRadius.circular(15.0),
-        border: Border.all(
-          color: stokredColor,
-          width: 2.0,
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.02,
-          vertical: screenWidth * 0.01,
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: Colors.white, size: iconSize),
-            SizedBox(width: screenWidth * 0.02),
-            Container(
-              height: screenWidth * 0.09,
-              width: 2.0,
-              color: stokredColor,
-            ),
-            SizedBox(width: screenWidth * 0.02),
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: hintText,
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          ],
+    return SizedBox(
+      width: screenWidth * .9,
+      child: TextFormField(
+        validator: validator,
+        controller: controller,
+        obscureText: obscure,
+        onTap: onTap,
+        onChanged: onChanged,
+        style: const TextStyle(color: Colors.white,fontSize: 20),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: ConstantsColors.navigationColor2,
+          hintText: hintText,
+          hintStyle: const TextStyle(color: Colors.white, fontSize: 20),
+          suffixIcon: Icon(suffixIcon, size: iconSize, color: Colors.white),
+          prefixIcon: Icon(prefixIcon, size: iconSize, color: Colors.white),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide:
+                BorderSide(color: ConstantsColors.navigationColor, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide:
+                BorderSide(color: ConstantsColors.navigationColor, width: 2),
+          ),
+          focusColor: ConstantsColors.navigationColor,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide:
+                BorderSide(color: ConstantsColors.navigationColor, width: 1),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide:
+                BorderSide(color: ConstantsColors.navigationColor, width: 1),
+          ),
         ),
       ),
     );

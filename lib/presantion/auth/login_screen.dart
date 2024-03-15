@@ -1,6 +1,4 @@
-import 'package:bath_room_app/constants/colours/colours.dart';
 import 'package:flutter/material.dart';
-
 import '../widgets/custom_button.dart';
 import '../widgets/custoum_text_filed.dart';
 
@@ -20,11 +18,11 @@ class LoginScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  CustomButton(),
+                  const CustomButton(),
                   CustomTextField(
-                    fillColor: textfilledColor,
                     hintText: 'Enter your text',
-                    icon: Icons.person,
+                    suffixIcon: null,
+                    prefixIcon: null,
                   ),
                 ],
               ),
