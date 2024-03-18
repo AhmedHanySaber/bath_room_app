@@ -4,20 +4,19 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final Color fillColor;
-  final String hintText;
   final IconData icon;
 
-  const CustomTextField({
-    Key? key,
+
+   const CustomTextField({
+    super.key,
     required this.fillColor,
-    required this.hintText,
     required this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double iconSize = screenWidth * 0.06;
+    double iconSize = screenWidth * 0.08;
 
     return Container(
       decoration: BoxDecoration(
@@ -35,7 +34,7 @@ class CustomTextField extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, color: Colors.white, size: iconSize),
+            Icon(icon, color: Colors.white,size: iconSize,),
             SizedBox(width: screenWidth * 0.02),
             Container(
               height: screenWidth * 0.09,
@@ -43,10 +42,10 @@ class CustomTextField extends StatelessWidget {
               color: stokredColor,
             ),
             SizedBox(width: screenWidth * 0.02),
-            Expanded(
+            const Expanded(
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: hintText,
+
                   border: InputBorder.none,
                 ),
               ),

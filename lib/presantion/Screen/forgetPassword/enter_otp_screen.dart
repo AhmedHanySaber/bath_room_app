@@ -1,10 +1,12 @@
 import 'package:bath_room_app/constants/colours/colours.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/custoum_text_filed.dart';
+import '../../widgets/custoum_text_filed.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+
+
+class EnterVerificationCodeScreen extends StatelessWidget {
+  const EnterVerificationCodeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,99 +38,80 @@ class LoginScreen extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            'App',
+                            'Password',
                             style: TextStyle(
-                              fontSize: 60,
+                              fontSize: 40,
                               fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(111,66,35, 1.0),
                             ),
                           ),
                           Text(
-                            'Name',
+                            'Reset',
                             style: TextStyle(
-                              fontSize: 60,
+                              fontSize: 40,
                               fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(111,66,35, 1.0),
                             ),
                           )
                         ],
-                          ),
+                      ),
                     ],
                   ),
                   SizedBox(
                     height: 80,
                   ),
-                  CustomTextField(
-                    fillColor: textfilledColor,
-                    icon: Icons.email_outlined,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  CustomTextField(
-                    fillColor: textfilledColor,
-                    icon: Icons.lock_outline,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forget Password?',
-                        style: TextStyle(
-                            color: stokredColor,
-                            fontSize: 19,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      elevation: 10,
-                      fixedSize: const Size(220, 60),
-                      foregroundColor: textfilledColor,
-                      backgroundColor: buttonColor1,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                    ),
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      elevation: 10,
-                      fixedSize: const Size(230, 60),
-                      foregroundColor: textfilledColor,
-                      backgroundColor: buttonColor1,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                    ),
-                    child: const Text(
-                      'Create Account',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
 
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:13,),
+                          child: Text('Enter verification code',
+                            style: TextStyle(
+                                color: stokredColor,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700),),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+
+                        CustomTextField(
+                          fillColor: textfilledColor,
+                          icon: Icons.email_outlined,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 60,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      elevation: 10,
+                      fixedSize: const Size(240, 60),
+                      foregroundColor: textfilledColor,
+                      backgroundColor: buttonColor1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
+                    child: const Text(
+                      'Send email',
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
+                  Spacer(),
                 ],
               ),
             ),
