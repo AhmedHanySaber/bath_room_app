@@ -11,4 +11,5 @@ class ConstantsColors {
   static Color fillColor2 = const Color(0xFF4b4e5f);
   static Color fillColor3 = const Color(0xFFF6EEE2);
   static Color navigationColor2 = const Color(0xFF888177);
+  static Color bottomSheetBackGround = const Color(0xFFD9D9D9);
 }

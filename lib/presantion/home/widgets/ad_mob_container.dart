@@ -1,6 +1,7 @@
-import 'package:bath_room_app/core/colors/colours.dart';
+import 'package:bath_room_app/core/controllers/location/location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
 
 class AdMobBanner extends StatefulWidget {
   const AdMobBanner({super.key});
@@ -11,7 +12,6 @@ class AdMobBanner extends StatefulWidget {
 
 class _AdMobBannerState extends State<AdMobBanner> {
   late BannerAd _bannerAd;
-  bool _isBannerAdReady = false;
 
   @override
   void initState() {
@@ -19,13 +19,11 @@ class _AdMobBannerState extends State<AdMobBanner> {
 
     _bannerAd = BannerAd(
       adUnitId: 'ca-app-pub-6901421742104699/2159379962',
-      size: AdSize.fullBanner,
+      size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (_) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
+          Provider.of<LocationController>(context).isBannerAdReady = true;
         },
         onAdFailedToLoad: (ad, error) {
           print('Ad failed to load: $error');
@@ -45,15 +43,10 @@ class _AdMobBannerState extends State<AdMobBanner> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: _isBannerAdReady
-          ? AdWidget(ad: _bannerAd)
-          : Container(
-              decoration: BoxDecoration(
-                color: ConstantsColors.navigationColor.withOpacity(.2),
-              ),
-            ),
-    );
+    return Provider.of<LocationController>(context, listen: false)
+                .isBannerAdReady ==
+            true
+        ? AdWidget(ad: _bannerAd)
+        : const SizedBox();
   }
 }

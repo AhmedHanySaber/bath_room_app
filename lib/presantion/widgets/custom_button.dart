@@ -1,25 +1,42 @@
+import 'package:bath_room_app/core/colors/colours.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   final double? width;
+  final String text;
+  final Color? color;
   final void Function()? onPressed;
 
-  const CustomButton({super.key, this.onPressed, this.width = 100});
+  const CustomButton({
+    super.key,
+    this.onPressed,
+    this.width = 150,
+    required this.text,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 60,
-      width: width,
-      child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.green,
-            disabledForegroundColor: Colors.grey.withOpacity(0.38),
-            disabledBackgroundColor: Colors.grey.withOpacity(0.12),
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+          height: 50,
+          width: width,
+          decoration: BoxDecoration(
+            color: color ?? ConstantsColors.fillColor3,
+            borderRadius: BorderRadius.circular(15),
           ),
-          child: const Text('Custom Button')),
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                color: ConstantsColors.navigationColor2,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                letterSpacing: 2,
+              ),
+            ),
+          )),
     );
   }
 }

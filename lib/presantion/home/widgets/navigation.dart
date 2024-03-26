@@ -1,8 +1,6 @@
-
 import 'package:bath_room_app/core/colors/colours.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../core/controllers/home/home_controller.dart';
 
 class NavigationBarConfig extends StatefulWidget {

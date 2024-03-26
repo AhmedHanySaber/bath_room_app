@@ -1,8 +1,13 @@
 import 'package:bath_room_app/core/colors/colours.dart';
+import 'package:bath_room_app/core/controllers/location/location_controller.dart';
 import 'package:bath_room_app/presantion/home/widgets/ad_mob_container.dart';
 import 'package:bath_room_app/presantion/home/widgets/coffie_container.dart';
-
+import 'package:bath_room_app/presantion/maps/maps_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../core/controllers/home/home_controller.dart';
+import '../../models/locations_model/location_model.dart';
+import '../maps/widgets/location_bottom_sheet.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -46,12 +51,12 @@ class HomeScreen extends StatelessWidget {
                     topLeft: Radius.circular(12),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Row(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 5),
@@ -65,58 +70,128 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .18,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return const CoffeeContainer();
+                      ),
+                      const SizedBox(height: 10),
+                      Consumer<LocationController>(
+                        builder: (context, controller, _) {
+                          return ValueListenableBuilder<List<LocationModel>>(
+                            valueListenable:
+                                LocationController.locationsNotifier,
+                            builder: (context, locations, _) {
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * .18,
+                                child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: controller.locationsList.length,
+                                  separatorBuilder: (context, index) {
+                                    return const SizedBox(width: 5);
+                                  },
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        final homeController =
+                                            Provider.of<HomeController>(context,
+                                                listen: false);
+                                        homeController
+                                            .navigateToMapWithLocation(
+                                                locations[index]);
+
+                                        if (homeController.selectedLocation !=
+                                            null) {
+                                          print(true);
+                                          showLocationDetails(
+                                            context,
+                                            location: homeController
+                                                .selectedLocation!,
+                                            isCafe: homeController
+                                                    .selectedLocation!
+                                                    .instantCoffee ??
+                                                false,
+                                          );
+                                          // Reset the selectedLocation in HomeController to null
+                                          homeController.selectedLocation =
+                                              null;
+                                        }
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (_) => MapsScreen(
+                                        //       locations: locations,
+                                        //       locationModel: locations[index],
+                                        //     ),
+                                        //   ),
+                                        // );
+                                      },
+                                      child: Row(
+                                        children: [
+                                          const SizedBox(width: 5),
+                                          CoffeeContainer(
+                                            locationModel:
+                                                controller.locationsList[index],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
                             },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(width: 5);
-                            },
-                          ),
+                          );
+                        },
+                      ),
+                      Container(
+                        height: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const AdMobBanner(),
-                        ),
-                        Row(
+                        child: const AdMobBanner(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Text(
-                                "Favorites:",
-                                style: TextStyle(
-                                    fontSize: 25,
-                                    color: ConstantsColors.navigationColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                            Text(
+                              "Favorites:",
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  color: ConstantsColors.navigationColor,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .18,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return const CoffeeContainer();
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(width: 5);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 10),
+                      Consumer<LocationController>(
+                          builder: (context, controller, _) {
+                        return ValueListenableBuilder<List<LocationModel>>(
+                          valueListenable: LocationController.locationsNotifier,
+                          builder: (context, locations, _) {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height * .18,
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: controller.locationsList.length,
+                                itemBuilder: (context, index) {
+                                  return Row(
+                                    children: [
+                                      SizedBox(width: 5),
+                                      CoffeeContainer(
+                                        locationModel:
+                                            controller.locationsList[index],
+                                      ),
+                                    ],
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox(width: 5);
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      }),
+                    ],
                   ),
                 ),
               ),

@@ -1,9 +1,14 @@
 import 'package:bath_room_app/core/colors/colours.dart';
+import 'package:bath_room_app/core/network/app_constants.dart';
+import 'package:bath_room_app/models/locations_model/location_model.dart';
+import 'package:bath_room_app/presantion/widgets/rating_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CoffeeContainer extends StatelessWidget {
-  const CoffeeContainer({super.key});
+  final LocationModel locationModel;
+
+  const CoffeeContainer({super.key, required this.locationModel});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class CoffeeContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Image.asset(
-                  "assets/3.png",
+                  AppConstants.image3,
                   height: 80,
                 ),
                 const SizedBox(width: 15),
@@ -31,50 +36,20 @@ class CoffeeContainer extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Image.asset(
-                          "assets/7.png",
-                          height: 20,
-                        ),
-                        Image.asset(
-                          "assets/7.png",
-                          height: 20,
-                        ),
-                        Image.asset(
-                          "assets/7.png",
-                          height: 20,
-                        ),
-                        Image.asset(
-                          "assets/7.png",
-                          height: 20,
-                        ),
-                        Image.asset(
-                          "assets/6.png",
-                          height: 20,
+                        ...buildRatingImages(
+                          rating: locationModel.priceRating!.toDouble(),
+                          ratingAssetPath: AppConstants.image7,
+                          ratingRemainPath: AppConstants.image6,
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        Image.asset(
-                          "assets/5.png",
-                          height: 20,
-                        ),
-                        Image.asset(
-                          "assets/5.png",
-                          height: 20,
-                        ),
-                        Image.asset(
-                          "assets/5.png",
-                          height: 20,
-                        ),
-                        Image.asset(
-                          "assets/5.png",
-                          height: 20,
-                        ),
-                        Image.asset(
-                          "assets/4.png",
-                          height: 20,
+                        ...buildRatingImages(
+                          rating: locationModel.friendlinessRating!.toDouble(),
+                          ratingAssetPath: AppConstants.image5,
+                          ratingRemainPath: AppConstants.image4,
                         ),
                       ],
                     ),
@@ -91,7 +66,7 @@ class CoffeeContainer extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Text(
-                  "N2, Gonubie, East London",
+                  locationModel.locationDescription??"",
                   style: TextStyle(
                       fontSize: 12,
                       color: ConstantsColors.navigationColor2,

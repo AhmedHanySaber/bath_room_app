@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:logger/logger.dart';
-import 'api_constants.dart';
+import '../app_constants.dart';
 
 Logger logger = Logger();
 
@@ -23,13 +23,12 @@ class ApiService {
   Map<String, String> get _defaultHeaders {
     return {
       "Content-Type": Headers.jsonContentType,
-      "Accept": Headers.jsonContentType,
     };
   }
 
   static final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: baseUrl,
+      baseUrl: AppConstants.baseUrl,
       connectTimeout: _connectTimeout,
       receiveTimeout: _receiveTimeout,
       sendTimeout: _sendTimeout,
@@ -141,7 +140,7 @@ class ApiService {
     required String url,
     bool returnDataOnly = true,
     bool automaticManageIndicator = true,
-    dynamic queryParameters,
+    dynamic requestBody,
     Duration? sendTimeOut = _sendTimeout,
     CancelToken? cancelToken,
     bool logging = true,
@@ -156,7 +155,7 @@ class ApiService {
       url: url,
       returnDataOnly: returnDataOnly,
       methodType: _MethodType.get,
-      requestBody: queryParameters,
+      requestBody: requestBody,
       // automaticManageIndicator: automaticManageIndicator,
       additionalHeaders: additionalHeaders,
       logging: logging,

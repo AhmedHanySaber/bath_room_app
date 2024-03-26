@@ -28,6 +28,10 @@ class _CustomSwitcherState extends State<CustomSwitcher> {
         ),
         Switch(
           value: selected,
+          inactiveThumbColor: ConstantsColors.fillColor3,
+          inactiveTrackColor: ConstantsColors.navigationColor,
+          activeColor:ConstantsColors.navigationColor,
+          activeTrackColor: ConstantsColors.fillColor3,
           onChanged: (x) {
             setState(() {
               selected = x;

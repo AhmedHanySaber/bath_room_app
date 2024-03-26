@@ -46,6 +46,13 @@ dependencies:
   get: ^4.6.6
   provider: ^6.1.2
   google_mobile_ads: ^4.0.0
+  fluttertoast: ^8.2.4
+  shared_preferences: ^2.2.2
+  connectivity: ^3.0.6
+  animated_rating_stars: ^1.0.1
+  geolocator: ^11.0.0
+  geocoding: ^3.0.0
+  youtube_player_flutter: ^9.0.0
 
 dev_dependencies:
   flutter_test:
