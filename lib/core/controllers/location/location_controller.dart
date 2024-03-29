@@ -19,6 +19,14 @@ class LocationController extends ChangeNotifier {
   bool groundCoffeeSelected = false;
   bool alternativeOptionsSelected = false;
   bool isBannerAdReady = false;
+  double cleanlinessRating = 0.0;
+  double accessibilityRating = 0.0;
+  double suppliesRating = 0.0;
+  double safetyRating = 0.0;
+  double priceRating = 0.0;
+  double tasteRating = 0.0;
+  double selectionRating = 0.0;
+  double friendlinessRating = 0.0;
 
   static final ValueNotifier<Map<String, bool>> boolValuesNotifier =
       ValueNotifier({});
@@ -76,13 +84,13 @@ class LocationController extends ChangeNotifier {
         additionalHeaders: {"api_token": AppConstants.token},
         requestBody: map,
       );
+      Navigator.pop(context);
       showSnackBar(context,
           text:
               "location added successfully, please restart the app to see your place",
           color: Colors.green,
           duration: const Duration(seconds: 8));
       // notifyListeners();
-      Navigator.pop(context);
     } catch (e) {
       if (e is DioException) {
         if (e.response!.statusCode == 500) {

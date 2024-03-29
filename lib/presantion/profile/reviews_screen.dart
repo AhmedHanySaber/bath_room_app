@@ -2,6 +2,7 @@ import 'package:bath_room_app/core/controllers/reviews/reviews_controller.dart';
 import 'package:bath_room_app/models/review_models/review_model.dart';
 import 'package:bath_room_app/presantion/profile/widgets/review_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/colors/colours.dart';
 
@@ -58,29 +59,34 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            Expanded(
-              child: ValueListenableBuilder<List<ReviewModel>>(
-                  valueListenable: ReviewsController.myReviewsNotifier,
-                  builder: (context, listner, _) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: GridView.builder(
-                        itemCount: listner.length,
-                        gridDelegate:
+            Consumer<ReviewsController>(
+              builder: (context, controller,_) {
+                return Expanded(
+                  child: ValueListenableBuilder<List<ReviewModel>>(
+                      valueListenable: ReviewsController.myReviewsNotifier,
+                      builder: (context, listner, _) {
+                        print(listner.length);
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: GridView.builder(
+                            itemCount: listner.length,
+                            gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 8,
-                          childAspectRatio: .68,
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Review(
-                            reviewModel: listner[index],
-                          );
-                        },
-                      ),
-                    );
-                  }),
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
+                              childAspectRatio: .68,
+                            ),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Review(
+                                reviewModel: listner[index],
+                              );
+                            },
+                          ),
+                        );
+                      }),
+                );
+              },
             ),
           ],
         ),

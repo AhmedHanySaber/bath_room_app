@@ -1,6 +1,7 @@
 import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:bath_room_app/core/colors/colours.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 List<Widget> buildRatingImages(
     {required double rating,
@@ -31,48 +32,52 @@ List<Widget> buildRatingImages(
 class AddRatingIndex extends StatelessWidget {
   final double index;
   final String title;
+  Color? color = ConstantsColors.navigationColor;
   final void Function(double rating) onChanged;
 
-  const AddRatingIndex({
+  AddRatingIndex({
     super.key,
     required this.index,
     required this.onChanged,
     required this.title,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-              color: ConstantsColors.navigationColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 15),
-        ),
-        AnimatedRatingStars(
-          initialRating: 3.0,
-          minRating: 0.0,
-          maxRating: 5.0,
-          filledColor: ConstantsColors.navigationColor,
-          emptyColor: Colors.grey,
-          filledIcon: Icons.star,
-          halfFilledIcon: Icons.star_half,
-          emptyIcon: Icons.star_border,
-          onChanged: onChanged,
-          displayRatingValue: true,
-          interactiveTooltips: true,
-          customFilledIcon: Icons.star,
-          customHalfFilledIcon: Icons.star_half,
-          customEmptyIcon: Icons.star_border,
-          starSize: 20,
-          animationDuration: const Duration(milliseconds: 300),
-          animationCurve: Curves.easeInOut,
-          readOnly: false,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.bold,
+                fontSize: 15),
+          ),
+          AnimatedRatingStars(
+            initialRating: 1.0,
+            minRating: 0.0,
+            maxRating: 5.0,
+            filledColor: ConstantsColors.navigationColor,
+            emptyColor: ConstantsColors.fillColor3,
+            filledIcon: FontAwesomeIcons.mugSaucer,
+            emptyIcon: FontAwesomeIcons.mugSaucer,
+            onChanged: onChanged,
+            displayRatingValue: true,
+            interactiveTooltips: true,
+            customFilledIcon: FontAwesomeIcons.mugSaucer,
+            customEmptyIcon: FontAwesomeIcons.mugSaucer,
+            customHalfFilledIcon: FontAwesomeIcons.mugSaucer,
+            starSize: 12,
+            animationDuration: const Duration(milliseconds: 300),
+            animationCurve: Curves.bounceIn,
+            readOnly: false,
+          ),
+        ],
+      ),
     );
   }
 }

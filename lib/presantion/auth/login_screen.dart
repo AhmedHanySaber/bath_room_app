@@ -6,6 +6,7 @@ import 'package:bath_room_app/presantion/auth/sginup_screen.dart';
 import 'package:bath_room_app/presantion/widgets/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/custoum_text_filed.dart';
@@ -140,30 +141,63 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   const SizedBox(height: 30),
-                  CustomButton(
-                    text: "Login",
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        formKey.currentState!.save();
-                        await Provider.of<AuthController>(context,
-                                listen: false)
-                            .login(context,
-                                email: emailController.text,
-                                password: passwordController.text,
-                                remember:
-                                    AuthController.rememberNotifier.value);
-                      }
-                    },
-                  ),
+                  Stack(children: [
+                    Container(
+                      height: 30,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                              offset: const Offset(0, 35),
+                              blurRadius: 10,
+                              spreadRadius: 8,
+                              color: Colors.grey.withOpacity(.7))
+                        ],
+                      ),
+                    ),
+                    CustomButton(
+                      text: "Login",
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
+                          await Provider.of<AuthController>(context,
+                                  listen: false)
+                              .login(context,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  remember:
+                                      AuthController.rememberNotifier.value);
+                        }
+                      },
+                    ),
+                  ]),
                   const SizedBox(height: 30),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 60),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(child: Divider()),
+                        SizedBox(width: 10),
+                        Text(
+                          "Or",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(child: Divider()),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   CustomButton(
                     text: "Create account",
                     width: 200,
                     color: ConstantsColors.bottomSheetBackGround,
                     onPressed: () {
                       Navigator.pushReplacementNamed(
-                          context,
-                          Routes.createAccount);
+                          context, Routes.createAccount);
                     },
                   ),
                 ],

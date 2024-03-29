@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/colors/colours.dart';
+import '../../widgets/snak_bar.dart';
 
 class Review extends StatelessWidget {
   final ReviewModel reviewModel;
@@ -16,9 +17,10 @@ class Review extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final String myId = AppConstants.userId;
     return Container(
-      width: MediaQuery.of(context).size.width * .5,
+      width: size.width * .5,
       decoration: BoxDecoration(
         color: ConstantsColors.bottomSheetBackGround,
         borderRadius: BorderRadius.circular(20),
@@ -42,22 +44,38 @@ class Review extends StatelessWidget {
                         builder: (context, controller, _) {
                           return InkWell(
                             onTap: () {
-                              showCustomDialog(
-                                context,
-                                title: "delete",
-                                body: "this review will be deleted",
-                                onPressed: () {
-                                  controller.deleteReview(
-                                    context,
-                                    locationId: reviewModel.id ?? "",
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    title: const Text("delete"),
+                                    content: const Text(
+                                        "this review will be deleted"),
+                                    actions: [
+                                      CupertinoDialogAction(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('close')),
+                                      CupertinoDialogAction(
+                                          isDestructiveAction: true,
+                                          onPressed: () async {
+                                            await controller.deleteReview(
+                                              context,
+                                              locationId: reviewModel.id ?? "",
+                                            );
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("delete")),
+                                    ],
                                   );
                                 },
-                                actionName: 'delete',
                               );
                             },
                             child: Icon(
                               Icons.delete,
                               color: ConstantsColors.navigationColor,
+                              size: size.width * .058,
                             ),
                           );
                         },
@@ -68,14 +86,16 @@ class Review extends StatelessWidget {
             const SizedBox(height: 10),
             Row(
               children: [
-                reviewModel.instantCoffee!
+                reviewModel.instantCoffee == true
                     ? Icon(
                         Icons.check_box_outlined,
                         color: ConstantsColors.navigationColor2,
+                        size: size.width * .058,
                       )
                     : Icon(
                         Icons.check_box_outline_blank,
                         color: ConstantsColors.navigationColor2,
+                        size: size.width * .058,
                       ),
                 Text(
                   "Instant/Machine",
@@ -85,14 +105,16 @@ class Review extends StatelessWidget {
             ),
             Row(
               children: [
-                reviewModel.beansCoffee!
+                reviewModel.beansCoffee == true
                     ? Icon(
                         Icons.check_box_outlined,
                         color: ConstantsColors.navigationColor2,
+                        size: size.width * .058,
                       )
                     : Icon(
                         Icons.check_box_outline_blank,
                         color: ConstantsColors.navigationColor2,
+                        size: size.width * .058,
                       ),
                 Text(
                   "Grounds/Beans",
@@ -110,6 +132,7 @@ class Review extends StatelessWidget {
                       Icon(
                         CupertinoIcons.money_dollar_circle,
                         color: ConstantsColors.navigationColor,
+                        size: size.width * .058,
                       ),
                       const SizedBox(width: 10),
                       Row(
@@ -128,6 +151,7 @@ class Review extends StatelessWidget {
                       Icon(
                         Icons.emoji_food_beverage,
                         color: ConstantsColors.navigationColor,
+                        size: size.width * .058,
                       ),
                       const SizedBox(width: 10),
                       Row(
@@ -146,6 +170,7 @@ class Review extends StatelessWidget {
                       Icon(
                         Icons.ads_click,
                         color: ConstantsColors.navigationColor,
+                        size: size.width * .058,
                       ),
                       const SizedBox(width: 10),
                       Row(
@@ -164,6 +189,7 @@ class Review extends StatelessWidget {
                       Icon(
                         Icons.clean_hands,
                         color: ConstantsColors.navigationColor,
+                        size: size.width * .058,
                       ),
                       const SizedBox(width: 10),
                       Row(
@@ -177,18 +203,20 @@ class Review extends StatelessWidget {
                       )
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   Row(
                     children: [
                       Icon(
                         Icons.location_on_outlined,
                         color: ConstantsColors.navigationColor,
+                        size: size.width * .058,
                       ),
                       const SizedBox(width: 5),
                       Text(
                         "East London",
-                        style:
-                            TextStyle(color: ConstantsColors.navigationColor2),
+                        style: TextStyle(
+                            color: ConstantsColors.navigationColor2,
+                            fontSize: 14),
                       )
                     ],
                   ),
@@ -197,7 +225,7 @@ class Review extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              "10/12/2023",
+              reviewModel.createdDate.toString().substring(0, 10),
               style: TextStyle(color: ConstantsColors.navigationColor2),
             )
           ],

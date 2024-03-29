@@ -164,6 +164,17 @@ class ApiService {
     );
   }
 
+  Future<Response> delData({
+    required String url,
+    Map<String, dynamic>? data,
+  }) async {
+    _dio.options.headers = {
+      'Content-Type': 'application/json',
+      "api_token": AppConstants.token,
+    };
+    return await _dio.delete(url, data: data);
+  }
+
   Future<Either<T, Failure>> delete<T>({
     required String url,
     bool returnDataOnly = true,

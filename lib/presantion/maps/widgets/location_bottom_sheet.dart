@@ -5,6 +5,8 @@ import 'package:bath_room_app/presantion/maps/widgets/add_review_sheet.dart';
 import 'package:bath_room_app/presantion/profile/widgets/review_widget.dart';
 import 'package:bath_room_app/presantion/widgets/custom_show_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../core/colors/colours.dart';
 import '../../../core/network/app_constants.dart';
@@ -93,7 +95,7 @@ void showLocationDetails(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Icon(
-                      Icons.favorite_border,
+                      FontAwesomeIcons.bookmark,
                       color: location.instantCoffee == false
                           ? ConstantsColors.navigationColor2
                           : ConstantsColors.fillColor3,
@@ -112,8 +114,7 @@ void showLocationDetails(
                           showCustomDialog(
                             context,
                             title: "Unauthorized",
-                            body:
-                                "please login to access add review feature",
+                            body: "please login to access add review feature",
                             actionName: "login",
                             onPressed: () {
                               Navigator.pushNamedAndRemoveUntil(
@@ -143,7 +144,7 @@ void showLocationDetails(
                     return const SizedBox();
                   }
                   return SizedBox(
-                    height: MediaQuery.of(context).size.height * .31,
+                    height: MediaQuery.of(context).size.height * .35,
                     child: ListView.separated(
                       itemCount: listener.length,
                       scrollDirection: Axis.horizontal,

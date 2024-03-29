@@ -30,12 +30,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * .86,
-            child: Consumer<AuthController>(
-              builder: (context, controller, _) {
-                return Column(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * .86,
+          child: Consumer<AuthController>(
+            builder: (context, controller, _) {
+              return SingleChildScrollView(
+                child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(10),
@@ -80,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
-
+                
                                       if (AppConstants.userId == '') {
                                         showCustomDialog(
                                           context,
@@ -181,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(height: 140,),
                     Row(
                       children: [
                         AppConstants.token != ''
@@ -229,9 +229,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     )
                   ],
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),

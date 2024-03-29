@@ -28,14 +28,14 @@ class ReviewsController extends ChangeNotifier {
   bool sitDown = false;
   bool keyRequired = false;
   bool wheelchairFriendly = false;
-  double cleanlinessRating = 0.0;
-  double accessibilityRating = 0.0;
-  double suppliesRating = 0.0;
-  double safetyRating = 0.0;
-  double priceRating = 0.0;
-  double tasteRating = 0.0;
-  double selectionRating = 0.0;
-  double friendlinessRating = 0.0;
+  double cleanlinessRating = 1.0;
+  double accessibilityRating = 1.0;
+  double suppliesRating = 1.0;
+  double safetyRating = 1.0;
+  double priceRating = 1.0;
+  double tasteRating = 1.0;
+  double selectionRating = 1.0;
+  double friendlinessRating = 1.0;
 
   Future<List<ReviewModel>?> getAllReviews(BuildContext context) async {
     try {
@@ -93,6 +93,7 @@ class ReviewsController extends ChangeNotifier {
           url: AppConstants.ADD_REVIEW,
           requestBody: map,
           additionalHeaders: {"api_token": AppConstants.token});
+      await getMyReviews(context, AppConstants.userId);
       return true;
     } catch (e) {
       if (e is DioException) {
@@ -111,26 +112,39 @@ class ReviewsController extends ChangeNotifier {
   Future<bool> deleteReview(BuildContext context,
       {required String locationId}) async {
     try {
-      await apiService.delete(
-          url: "${AppConstants.DELETE_REVIEW}/$locationId",
-          additionalHeaders: {"api_token": AppConstants.token});
+      var response = await apiService.delData(
+          url: "${AppConstants.DELETE_REVIEW}/$locationId");
+      print('Delete API response: $response');
+
+      var currentReviews = List<ReviewModel>.from(myReviewsNotifier.value);
+      currentReviews.removeWhere((review) => review.id == locationId);
+      myReviewsNotifier.value = currentReviews;
+      if(response.statusCode==200){
+        showSnackBar(context, text: "Review has been deleted", color: Colors.green);
+      }
+      print('New notifier length: ${myReviewsNotifier.value.length}');
+
       return true;
     } catch (e) {
+      print("===============error=============");
+      print("=========== ${e.toString()}");
       if (e is DioException) {
         if (e.response!.statusCode == 500) {
           showSnackBar(context, text: e.response.toString(), color: Colors.red);
         }
-        showSnackBar(context, text: e.message!, color: Colors.red);
-        return false;
-      } else {
-        showSnackBar(context, text: e.toString(), color: Colors.red);
+        showSnackBar(context,
+            text: "===========>${e.message!}",
+            color: Colors.red,
+            duration: const Duration(seconds: 20));
         return false;
       }
+      return false;
     }
   }
 
   Future<List<ReviewModel>?> getMyReviews(
       BuildContext context, String myUserId) async {
+    print("object");
     try {
       await getAllReviews(context);
       myReviewsNotifier.value =
@@ -147,6 +161,7 @@ class ReviewsController extends ChangeNotifier {
   void handleInstantCoffeeSelected(bool value) {
     instantCoffee = value;
     reviewsValuesNotifier.value.addAll({"instant_coffee": instantCoffee});
+    notifyListeners();
   }
 
   void handleGroundCoffeeSelected(bool value) {

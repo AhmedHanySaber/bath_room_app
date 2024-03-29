@@ -1,7 +1,7 @@
 import 'package:bath_room_app/core/controllers/location/location_controller.dart';
-import 'package:bath_room_app/presantion/maps/widgets/add_location_info.dart';
 import 'package:bath_room_app/presantion/widgets/custom_button.dart';
 import 'package:bath_room_app/presantion/widgets/custoum_text_filed.dart';
+import 'package:bath_room_app/presantion/widgets/rating_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -59,47 +59,191 @@ void showAddLocationDetails(BuildContext context, LatLng latLng) {
                       prefixIcon: Icons.add_location_alt),
                 ),
                 const SizedBox(height: 10),
-                const Padding(
-                  padding: EdgeInsets.all(10),
-                  child: AddLocationInfoContainer(),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: ConstantsColors.navigationColor2,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Text(
-                          "long: ${latLng.longitude}".substring(0, 12),
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: ConstantsColors.fillColor3),
-                        ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ConstantsColors.navigationColor2,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 18),
+                      child: Consumer<LocationController>(
+                        builder: (context, controller, _) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Coffee type:",
+                                style: TextStyle(
+                                    color:
+                                        ConstantsColors.bottomSheetBackGround,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                              const SizedBox(height: 5),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          controller
+                                              .handleInstantCoffeeSelected(
+                                                  !controller
+                                                      .instantCoffeeSelected);
+                                        },
+                                        child: Icon(
+                                          controller.instantCoffeeSelected
+                                              ? Icons.check_box
+                                              : Icons.check_box_outline_blank,
+                                          color: ConstantsColors
+                                              .bottomSheetBackGround,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        "instant coffee",
+                                        style: TextStyle(
+                                            color: ConstantsColors
+                                                .bottomSheetBackGround,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          controller.handleGroundCoffeeSelected(
+                                              !controller.groundCoffeeSelected);
+                                        },
+                                        child: Icon(
+                                          controller.groundCoffeeSelected
+                                              ? Icons.check_box
+                                              : Icons.check_box_outline_blank,
+                                          color: ConstantsColors
+                                              .bottomSheetBackGround,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "Ground coffee",
+                                        style: TextStyle(
+                                            color: ConstantsColors
+                                                .bottomSheetBackGround,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      controller
+                                          .handleAlternativeOptionsSelected(
+                                              !controller
+                                                  .alternativeOptionsSelected);
+                                    },
+                                    child: Icon(
+                                      controller.alternativeOptionsSelected
+                                          ? Icons.check_box
+                                          : Icons.check_box_outline_blank,
+                                      color:
+                                          ConstantsColors.bottomSheetBackGround,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    "Alternative options",
+                                    style: TextStyle(
+                                        color: ConstantsColors
+                                            .bottomSheetBackGround,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                "Rating:",
+                                style: TextStyle(
+                                    color:
+                                        ConstantsColors.bottomSheetBackGround,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                              AddRatingIndex(
+                                index: Provider.of<LocationController>(context,
+                                        listen: false)
+                                    .priceRating,
+                                onChanged: (value) {
+                                  Provider.of<LocationController>(context,
+                                          listen: false)
+                                      .priceRating = value;
+                                },
+                                title: "Price:",
+                                color: ConstantsColors.bottomSheetBackGround,
+                              ),
+                              AddRatingIndex(
+                                index: Provider.of<LocationController>(context,
+                                        listen: false)
+                                    .tasteRating,
+                                onChanged: (value) {
+                                  Provider.of<LocationController>(context,
+                                          listen: false)
+                                      .tasteRating = value;
+                                },
+                                title: "Taste:",
+                                color: ConstantsColors.bottomSheetBackGround,
+                              ),
+                              AddRatingIndex(
+                                index: Provider.of<LocationController>(context,
+                                        listen: false)
+                                    .selectionRating,
+                                onChanged: (value) {
+                                  Provider.of<LocationController>(context,
+                                          listen: false)
+                                      .selectionRating = value;
+                                },
+                                title: "Selection:",
+                                color: ConstantsColors.bottomSheetBackGround,
+                              ),
+                              AddRatingIndex(
+                                index: Provider.of<LocationController>(context,
+                                        listen: false)
+                                    .friendlinessRating,
+                                onChanged: (value) {
+                                  Provider.of<LocationController>(context,
+                                          listen: false)
+                                      .friendlinessRating = value;
+
+                                  print(Provider.of<LocationController>(context,
+                                          listen: false)
+                                      .friendlinessRating);
+                                },
+                                title: "Friendliness:",
+                                color: ConstantsColors.bottomSheetBackGround,
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: ConstantsColors.navigationColor2,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Text(
-                          "lat: ${latLng.latitude}".substring(0, 11),
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: ConstantsColors.fillColor3),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                SizedBox(height: size.height * .12),
+                SizedBox(height: 100),
                 Consumer<LocationController>(
                   builder: (context, controller, _) {
                     return ValueListenableBuilder<Map<String, bool>>(
@@ -112,8 +256,7 @@ void showAddLocationDetails(BuildContext context, LatLng latLng) {
                             text: "Add Location",
                             width: size.width * .5,
                             onPressed: () async {
-                              final address =await geo(latLng);
-                              print(address);
+                              final address = await geo(latLng);
                               await controller.addLocation(
                                 context,
                                 map: {
@@ -123,11 +266,17 @@ void showAddLocationDetails(BuildContext context, LatLng latLng) {
                                   "location_description": address,
                                   "description": desController.text,
                                   "instant_coffee":
-                                  entity["instant_coffee"] ?? false,
+                                      entity["instant_coffee"] ?? false,
                                   "ground_coffee":
-                                  entity["ground_coffee"] ?? false,
+                                      entity["ground_coffee"] ?? false,
                                   "alternate_options":
-                                  entity["alternative_options"] ?? false,
+                                      entity["alternative_options"] ?? false,
+                                  "price_rating": controller.priceRating,
+                                  "taste_rating": controller.tasteRating,
+                                  "selection_rating":
+                                      controller.selectionRating,
+                                  "friendliness_rating":
+                                      controller.friendlinessRating,
                                 },
                               );
                             },

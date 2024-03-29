@@ -20,7 +20,7 @@ class CoffeeContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -29,9 +29,9 @@ class CoffeeContainer extends StatelessWidget {
               children: [
                 Image.asset(
                   AppConstants.image3,
-                  height: 80,
+                  height: size.width * .19,
                 ),
-                const SizedBox(width: 15),
+                const SizedBox(width: 12),
                 Column(
                   children: [
                     Row(
