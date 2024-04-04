@@ -12,6 +12,7 @@ class ReviewsController extends ChangeNotifier {
   ReviewsController({required this.apiService});
 
   List<ReviewModel> _reviewsList = [];
+  bool isLoading = false;
 
   static final ValueNotifier<List<ReviewModel>> reviewsNotifier =
       ValueNotifier([]);
@@ -37,29 +38,29 @@ class ReviewsController extends ChangeNotifier {
   double selectionRating = 1.0;
   double friendlinessRating = 1.0;
 
-  Future<List<ReviewModel>?> getAllReviews(BuildContext context) async {
-    try {
-      final res = await apiService.get(url: AppConstants.GET_ALL_REVIEWS);
-      List<dynamic> data = res;
-      _reviewsList = data.map((e) {
-        return ReviewModel.fromJson(e);
-      }).toList();
-      reviewsNotifier.value = _reviewsList;
-      print("==========>${reviewsNotifier.value.length}");
-      return reviewsNotifier.value;
-    } catch (e) {
-      if (e is DioException) {
-        if (e.response!.statusCode == 500) {
-          showSnackBar(context, text: e.response.toString(), color: Colors.red);
-        }
-        showSnackBar(context, text: e.message!, color: Colors.red);
-        return [];
-      } else {
-        showSnackBar(context, text: e.toString(), color: Colors.red);
-        return [];
-      }
-    }
-  }
+  // Future<List<ReviewModel>?> getAllReviews(BuildContext context) async {
+  //   try {
+  //     final res = await apiService.get(url: AppConstants.GET_ALL_REVIEWS);
+  //     List<dynamic> data = res;
+  //     _reviewsList = data.map((e) {
+  //       return ReviewModel.fromJson(e);
+  //     }).toList();
+  //     reviewsNotifier.value = _reviewsList;
+  //     print("==========>${reviewsNotifier.value.length}");
+  //     return reviewsNotifier.value;
+  //   } catch (e) {
+  //     if (e is DioException) {
+  //       if (e.response!.statusCode == 500) {
+  //         showSnackBar(context, text: e.response.toString(), color: Colors.red);
+  //       }
+  //       showSnackBar(context, text: e.message!, color: Colors.red);
+  //       return [];
+  //     } else {
+  //       showSnackBar(context, text: e.toString(), color: Colors.red);
+  //       return [];
+  //     }
+  //   }
+  // }
 
   Future<List<ReviewModel>> getLocationReviews(BuildContext context,
       {required String locationId}) async {
@@ -93,7 +94,7 @@ class ReviewsController extends ChangeNotifier {
           url: AppConstants.ADD_REVIEW,
           requestBody: map,
           additionalHeaders: {"api_token": AppConstants.token});
-      await getMyReviews(context, AppConstants.userId);
+      await getMyReviews(context);
       return true;
     } catch (e) {
       if (e is DioException) {
@@ -119,8 +120,9 @@ class ReviewsController extends ChangeNotifier {
       var currentReviews = List<ReviewModel>.from(myReviewsNotifier.value);
       currentReviews.removeWhere((review) => review.id == locationId);
       myReviewsNotifier.value = currentReviews;
-      if(response.statusCode==200){
-        showSnackBar(context, text: "Review has been deleted", color: Colors.green);
+      if (response.statusCode == 200) {
+        showSnackBar(context,
+            text: "Review has been deleted", color: Colors.green);
       }
       print('New notifier length: ${myReviewsNotifier.value.length}');
 
@@ -142,14 +144,17 @@ class ReviewsController extends ChangeNotifier {
     }
   }
 
-  Future<List<ReviewModel>?> getMyReviews(
-      BuildContext context, String myUserId) async {
+  Future<List<ReviewModel>?> getMyReviews(BuildContext context) async {
     print("object");
     try {
-      await getAllReviews(context);
-      myReviewsNotifier.value =
-          _reviewsList.where((review) => review.userId == myUserId).toList();
-      print("======> ${myReviewsNotifier.value.length}");
+      final res = await apiService.get(
+          url: "${AppConstants.GET_MY_REVIEWS}${AppConstants.userId}");
+      List<dynamic> data = res;
+      _reviewsList = data.map((e) {
+        return ReviewModel.fromJson(e);
+      }).toList();
+      myReviewsNotifier.value = _reviewsList;
+      print("==========>${myReviewsNotifier.value.length}");
       return myReviewsNotifier.value;
     } catch (e) {
       print("=============error===========");

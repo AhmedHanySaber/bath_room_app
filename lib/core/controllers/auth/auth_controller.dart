@@ -141,6 +141,30 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+  Future<bool> deleteAccount(BuildContext context) async {
+    try {
+      await apiService.delData(
+          url: '${AppConstants.DELETE_ACCOUNT}${AppConstants.userId}');
+      showSnackBar(
+        context,
+        color: Colors.green,
+        text: "Account deleted successfully",
+      );
+      return true;
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response!.statusCode == 500) {
+          showSnackBar(context, text: e.response.toString(), color: Colors.red);
+        }
+        showSnackBar(context,
+            text: e.message ?? "something went wrong", color: Colors.red);
+      } else {
+        showSnackBar(context, text: e.toString(), color: Colors.red);
+      }
+      return false;
+    }
+  }
+
   Future<bool> register(
     BuildContext context, {
     required String displayName,
@@ -166,9 +190,9 @@ class AuthController extends ChangeNotifier {
     print(AppConstants.email);
 
     try {
-      await apiService.get(
+      await apiService.getData(
         url: AppConstants.RESET_OR_SUBMIT_PASSWORD_EMAIL,
-        requestBody: {
+        data: {
           "email": email ?? AppConstants.email,
         },
       );

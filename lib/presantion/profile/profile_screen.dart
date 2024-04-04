@@ -5,6 +5,7 @@ import 'package:bath_room_app/core/network/app_constants.dart';
 import 'package:bath_room_app/core/network/local/cache_helper.dart';
 import 'package:bath_room_app/core/routing/router.dart';
 import 'package:bath_room_app/models/review_models/review_model.dart';
+import 'package:bath_room_app/presantion/auth/delete_accont_screen.dart';
 import 'package:bath_room_app/presantion/widgets/custom_show_dialog.dart';
 import 'package:bath_room_app/presantion/widgets/custom_switcher.dart';
 import 'package:bath_room_app/presantion/widgets/snak_bar.dart';
@@ -80,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
-                
+
                                       if (AppConstants.userId == '') {
                                         showCustomDialog(
                                           context,
@@ -151,37 +152,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 },
                               ),
                             ),
-                            Consumer<ReviewsController>(
-                                builder: (context, controller, _) {
-                              Future.wait([
-                                controller.getMyReviews(
-                                    context, AppConstants.userId)
-                              ]);
-                              return ValueListenableBuilder<List<ReviewModel>>(
-                                  valueListenable:
-                                      ReviewsController.myReviewsNotifier,
-                                  builder: (context, listner, _) {
-                                    if (listner.isEmpty) {
-                                      return const SizedBox();
-                                    }
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: CustomRowButton(
-                                        title: "My Reviews",
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, Routes.reviews);
-                                        },
-                                      ),
-                                    );
-                                  });
-                            }),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: CustomRowButton(
+                                title: "My Reviews",
+                                onTap: () async {
+                                  // await Provider.of<ReviewsController>(context,
+                                  //         listen: false)
+                                  //     .getMyReviews(context);
+                                  Navigator.pushNamed(context, Routes.reviews);
+                                },
+                              ),
+                            ),
+                            // Consumer<ReviewsController>(
+                            //     builder: (context, controller, _) {
+                            //   Future.wait([
+                            //     controller.getMyReviews(
+                            //         context, AppConstants.userId)
+                            //   ]);
+                            //   return ValueListenableBuilder<List<ReviewModel>>(
+                            //       valueListenable:
+                            //           ReviewsController.myReviewsNotifier,
+                            //       builder: (context, listner, _) {
+                            //         if (listner.isEmpty) {
+                            //           return const SizedBox();
+                            //         }
+                            //
+                            //       });
+                            // }),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 140,),
+                    const SizedBox(height: 80),
                     Row(
                       children: [
                         AppConstants.token != ''
@@ -197,7 +200,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           Routes.login,
                                           (route) => false).catchError(
                                         (e) {
-                                          showSnackBar(
+                                          return showSnackBar(
                                             context,
                                             text: "something went wrong, $e",
                                             color: Colors.red,
@@ -227,7 +230,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                       ],
-                    )
+                    ),
+                    Row(
+                      children: [
+                        AppConstants.token != ''
+                            ? TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, Routes.deleteAccount);
+                                },
+                                child: Text(
+                                  "Delete Account",
+                                  style: TextStyle(
+                                      color: ConstantsColors.navigationColor2,
+                                      fontSize: 20),
+                                ),
+                              )
+                            : const SizedBox()
+                      ],
+                    ),
                   ],
                 ),
               );

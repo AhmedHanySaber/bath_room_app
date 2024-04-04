@@ -2,16 +2,20 @@ import 'package:bath_room_app/core/colors/colours.dart';
 import 'package:bath_room_app/core/controllers/location/location_controller.dart';
 import 'package:bath_room_app/presantion/home/widgets/ad_mob_container.dart';
 import 'package:bath_room_app/presantion/home/widgets/coffie_container.dart';
-import 'package:bath_room_app/presantion/maps/maps_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/controllers/home/home_controller.dart';
 import '../../models/locations_model/location_model.dart';
 import '../maps/widgets/location_bottom_sheet.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,15 +117,6 @@ class HomeScreen extends StatelessWidget {
                                           homeController.selectedLocation =
                                               null;
                                         }
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (_) => MapsScreen(
-                                        //       locations: locations,
-                                        //       locationModel: locations[index],
-                                        //     ),
-                                        //   ),
-                                        // );
                                       },
                                       child: Row(
                                         children: [
@@ -164,23 +159,63 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       Consumer<LocationController>(
                           builder: (context, controller, _) {
+                        controller.getAllFavorites(context);
                         return ValueListenableBuilder<List<LocationModel>>(
-                          valueListenable: LocationController.locationsNotifier,
+                          valueListenable:
+                              LocationController.myFavoritesNotifier,
                           builder: (context, locations, _) {
+                            if (locations.isEmpty) {
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * .18,
+                                child: Center(
+                                    child: Text(
+                                  "There's nothing here",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ConstantsColors.navigationColor,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                              );
+                            }
                             return SizedBox(
                               height: MediaQuery.of(context).size.height * .18,
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: controller.locationsList.length,
+                                itemCount: locations.length,
                                 itemBuilder: (context, index) {
-                                  return Row(
-                                    children: [
-                                      SizedBox(width: 5),
-                                      CoffeeContainer(
-                                        locationModel:
-                                            controller.locationsList[index],
-                                      ),
-                                    ],
+                                  return InkWell(
+                                    onTap: () {
+                                      final homeController =
+                                          Provider.of<HomeController>(context,
+                                              listen: false);
+                                      homeController.navigateToMapWithLocation(
+                                          locations[index]);
+
+                                      if (homeController.selectedLocation !=
+                                          null) {
+                                        print(true);
+                                        showLocationDetails(
+                                          context,
+                                          location:
+                                              homeController.selectedLocation!,
+                                          isCafe: homeController
+                                                  .selectedLocation!
+                                                  .instantCoffee ??
+                                              false,
+                                        );
+                                        // Reset the selectedLocation in HomeController to null
+                                        homeController.selectedLocation = null;
+                                      }
+                                    },
+                                    child: Row(
+                                      children: [
+                                        const SizedBox(width: 5),
+                                        CoffeeContainer(
+                                          locationModel: locations[index],
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 },
                                 separatorBuilder: (context, index) {

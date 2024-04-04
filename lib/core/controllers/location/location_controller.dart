@@ -2,6 +2,7 @@ import 'package:bath_room_app/models/locations_model/location_model.dart';
 import 'package:bath_room_app/presantion/widgets/snak_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
 import '../../network/app_constants.dart';
 import '../../network/remote/api_service.dart';
 
@@ -11,7 +12,10 @@ class LocationController extends ChangeNotifier {
   LocationController({required this.apiService});
 
   List<LocationModel> _locationsList = [];
+  List<LocationModel> _favoritesList = [];
   static final ValueNotifier<List<LocationModel>> locationsNotifier =
+      ValueNotifier([]);
+  static final ValueNotifier<List<LocationModel>> myFavoritesNotifier =
       ValueNotifier([]);
   static final ValueNotifier<bool> closedNotifier = ValueNotifier(false);
 
@@ -53,7 +57,108 @@ class LocationController extends ChangeNotifier {
     }
   }
 
+  Future<List<LocationModel>?> getAllFavorites(BuildContext context) async {
+   await Future.delayed(const Duration(seconds: 1));
+    try {
+      final res = await apiService.get(
+        url: "${AppConstants.GET_MY_FAVORITES}${AppConstants.userId}",
+      );
+      List<dynamic> data = res ;
+
+      final List<LocationModel> list = [];
+
+      for (var id in data) {
+        print(id.toString());
+        final location =
+            locationsList.firstWhere((element) => element.id == id.toString());
+        list.add(location);
+        print(id);
+        print(location);
+      }
+
+      _favoritesList = list;
+      myFavoritesNotifier.value = _favoritesList;
+      return myFavoritesNotifier.value;
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response!.statusCode == 500) {
+          showSnackBar(context, text: e.response.toString(), color: Colors.red);
+        }
+        return null;
+      } else {
+        showSnackBar(context, text: e.toString(), color: Colors.red);
+        return null;
+      }
+    }
+  }
+
+  Future<bool> addToFavorites(BuildContext context,
+      {required String locationId}) async {
+    try {
+      final res = await apiService.post(
+        url: "${AppConstants.ADD_TO_FAVORITES}$locationId",
+        additionalHeaders: {"api_token": AppConstants.token},
+      );
+
+      showSnackBar(
+        context,
+        text: "location added to favorites successfully",
+        color: Colors.green,
+      );
+
+      final location =
+      locationsList.firstWhere((element) => element.id == locationId);
+      myFavoritesNotifier.value.add(location);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response!.statusCode == 500) {
+          showSnackBar(context, text: e.response.toString(), color: Colors.red);
+        }
+        return false;
+      } else {
+        showSnackBar(context, text: e.toString(), color: Colors.red);
+        return false;
+      }
+    }
+  }
+
+  Future<bool> removeFromFavorites(BuildContext context,
+      {required String locationId}) async {
+    try {
+      await apiService.post(
+        url: "${AppConstants.DELETE_FAVORITE}$locationId",
+        additionalHeaders: {"api_token": AppConstants.token},
+      );
+
+      showSnackBar(
+        context,
+        text: "location removed from favorites successfully",
+        color: Colors.green,
+      );
+      final location =
+      locationsList.firstWhere((element) => element.id == locationId);
+      myFavoritesNotifier.value.remove(location);
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response!.statusCode == 500) {
+          showSnackBar(context, text: e.response.toString(), color: Colors.red);
+        }
+        return false;
+      } else {
+        showSnackBar(context, text: e.toString(), color: Colors.red);
+        return false;
+      }
+    }
+  }
+
   List<LocationModel> get locationsList => _locationsList;
+
+  List<LocationModel> get favoritesList => _favoritesList;
 
   Future<LocationModel?> getLocation(BuildContext context,
       {required String locationId}) async {
@@ -124,5 +229,10 @@ class LocationController extends ChangeNotifier {
     boolValuesNotifier.value
         .addAll({"alternative_options": alternativeOptionsSelected});
     notifyListeners();
+  }
+
+  bool checkFavorite({required String locationId}) {
+    final x = _favoritesList.where((favorite) => favorite.id == locationId);
+    return x.isNotEmpty;
   }
 }

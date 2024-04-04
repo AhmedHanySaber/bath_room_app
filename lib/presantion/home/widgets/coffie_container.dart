@@ -4,6 +4,7 @@ import 'package:bath_room_app/models/locations_model/location_model.dart';
 import 'package:bath_room_app/presantion/widgets/rating_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class CoffeeContainer extends StatelessWidget {
   final LocationModel locationModel;
@@ -20,7 +21,7 @@ class CoffeeContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -65,12 +66,14 @@ class CoffeeContainer extends StatelessWidget {
                   CupertinoIcons.placemark,
                   color: Colors.white,
                 ),
-                Text(
-                  locationModel.locationDescription??"",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: ConstantsColors.navigationColor2,
-                      fontWeight: FontWeight.bold),
+                Flexible(
+                  child: Text(
+                    locationModel.locationDescription ?? "",
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: ConstantsColors.navigationColor2,
+                        fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             )

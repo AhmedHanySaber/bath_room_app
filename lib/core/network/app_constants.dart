@@ -1,9 +1,9 @@
 class AppConstants {
-
   // api constants
   static const String baseUrl = "http://172.105.152.70:8082";
   static const String GET_USERS = "/account";
   static const String ADD_EDIT_ACCOUNT = "/account";
+  static const String DELETE_ACCOUNT = "/account/delete/";
   static const String VERIFYLOGIN = "/account/authentication";
   static const String VERIFY_ACCOUNT = "/account/authentication/";
   static const String RESET_OR_SUBMIT_PASSWORD_EMAIL =
@@ -15,6 +15,13 @@ class AppConstants {
   static const String GET_LOCATION_REVIEWS = "/locations/reviews";
   static const String DELETE_REVIEW = "/reviews";
   static const String GET_ALL_REVIEWS = "/reviews/all";
+  static const String GET_MY_REVIEWS = "/reviews/all?user_id=";
+  static const String GET_MY_FAVORITES =
+      "/account/favourite_locations?user_id=";
+  static const String ADD_TO_FAVORITES =
+      "/account/favourite_locations/add?location_id=";
+  static const String DELETE_FAVORITE =
+      "/account/favourite_locations/remove?location_id=";
   static const String ADD_REVIEW = "/reviews/add";
 
   // local
@@ -33,5 +40,4 @@ class AppConstants {
   static const String image7 = "assets/7.png";
   static const String image8 = "assets/8.png";
   static const String imageBeens = "assets/beens.png";
-
 }

@@ -136,6 +136,16 @@ class ApiService {
     );
   }
 
+  Future<Response> getData({
+    required String url,
+    Map<String, dynamic>? data,
+  }) async {
+    _dio.options.headers = {
+      'Content-Type': 'application/json',
+    };
+    return await _dio.get(url, data: data);
+  }
+
   Future<T> get<T>({
     required String url,
     bool returnDataOnly = true,

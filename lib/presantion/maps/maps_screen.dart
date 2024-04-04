@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:bath_room_app/core/controllers/home/home_controller.dart';
 import 'package:bath_room_app/core/controllers/location/location_controller.dart';
 import 'package:bath_room_app/core/network/app_constants.dart';
 import 'package:bath_room_app/presantion/maps/add_to_map_screen.dart';
@@ -33,6 +32,8 @@ class MapsScreenState extends State<MapsScreen> {
   BitmapDescriptor? bothIcon;
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  GoogleMapController? _mapController;
+  late final LatLng latlng;
 
   final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(-32.2223, 28.888),
@@ -70,7 +71,6 @@ class MapsScreenState extends State<MapsScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     Set<Marker> markers = widget.locations.map((location) {
       final icon =
           location.instantCoffee == true && location.alternateOptions == true
@@ -82,8 +82,8 @@ class MapsScreenState extends State<MapsScreen> {
           markerId: MarkerId(location.id ?? "default_id"),
           position: LatLng(location.latitude ?? 0.0, location.longitude ?? 0.0),
           icon: icon ?? BitmapDescriptor.defaultMarker,
-          infoWindow:
-              InfoWindow(title: location.name, snippet: location.description),
+          infoWindow: InfoWindow(
+              title: location.name, snippet: location.locationDescription),
           onTap: () {
             showLocationDetails(
               context,

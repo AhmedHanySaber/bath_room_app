@@ -1,3 +1,4 @@
+import 'package:bath_room_app/core/controllers/location/location_controller.dart';
 import 'package:bath_room_app/core/controllers/reviews/reviews_controller.dart';
 import 'package:bath_room_app/core/routing/router.dart';
 import 'package:bath_room_app/models/review_models/review_model.dart';
@@ -26,6 +27,7 @@ void showLocationDetails(
         : ConstantsColors.bottomSheetBackGround,
     context: context,
     builder: (context) {
+      final provider = Provider.of<LocationController>(context);
       Provider.of<ReviewsController>(context).getLocationReviews(
         context,
         locationId: location.id ?? "",
@@ -36,27 +38,42 @@ void showLocationDetails(
           child: Wrap(
             children: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Image.asset(
-                      isCafe ? AppConstants.image2 : AppConstants.image1,
-                      height: 60,
-                    ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Image.asset(
+                          isCafe ? AppConstants.image2 : AppConstants.image1,
+                          height: 60,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          location.name ?? "unknown",
+                          style: TextStyle(
+                              color: isCafe
+                                  ? ConstantsColors.bottomSheetBackGround
+                                  : ConstantsColors.navigationColor2,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      location.name ?? "unknown",
-                      style: TextStyle(
-                          color: isCafe
-                              ? ConstantsColors.bottomSheetBackGround
-                              : ConstantsColors.navigationColor2,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
-                  )
+                  InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                        color: isCafe
+                            ? ConstantsColors.fillColor3
+                            : ConstantsColors.navigationColor2,
+                      ))
                 ],
               ),
               const SizedBox(height: 20),
@@ -94,11 +111,31 @@ void showLocationDetails(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Icon(
-                      FontAwesomeIcons.bookmark,
-                      color: location.instantCoffee == false
-                          ? ConstantsColors.navigationColor2
-                          : ConstantsColors.fillColor3,
+                    InkWell(
+                      onTap: () {
+                        if (provider.checkFavorite(
+                                locationId: location.id ?? "") ==
+                            true) {
+                          provider.removeFromFavorites(
+                            context,
+                            locationId: location.id ?? "",
+                          );
+                        } else {
+                          provider.addToFavorites(
+                            context,
+                            locationId: location.id ?? "",
+                          );
+                        }
+                      },
+                      child: Icon(
+                        provider.checkFavorite(locationId: location.id ?? "") ==
+                                true
+                            ? FontAwesomeIcons.solidBookmark
+                            : FontAwesomeIcons.bookmark,
+                        color: location.instantCoffee == false
+                            ? ConstantsColors.navigationColor2
+                            : ConstantsColors.fillColor3,
+                      ),
                     ),
                     Icon(
                       Icons.share,

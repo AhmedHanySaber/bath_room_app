@@ -5,6 +5,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final String text;
   final Color? color;
+  final Color? textColor;
   final void Function()? onPressed;
 
   const CustomButton({
@@ -13,6 +14,7 @@ class CustomButton extends StatelessWidget {
     this.width = 150,
     required this.text,
     this.color,
+    this.textColor,
   });
 
   @override
@@ -30,7 +32,7 @@ class CustomButton extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                color: ConstantsColors.navigationColor2,
+                color: textColor ?? ConstantsColors.navigationColor2,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
                 letterSpacing: 2,

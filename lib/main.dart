@@ -24,6 +24,7 @@ void main() async {
   AppConstants.name = di.sl<CacheHelper>().getData(key: "name") ?? "";
   print("token is:${AppConstants.token}");
   print("email is:${AppConstants.email}");
+  print("id is:${AppConstants.userId}");
   runApp(const MyApp());
 }
 
@@ -53,7 +54,8 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (context) =>
-          di.sl<ReviewsController>(),
+          di.sl<ReviewsController>()..getMyReviews(context),
+          lazy: true,
         ),
       ],
       child: MaterialApp(

@@ -1,3 +1,4 @@
+import 'package:bath_room_app/presantion/auth/delete_accont_screen.dart';
 import 'package:bath_room_app/presantion/auth/reset_password_email.dart';
 import 'package:bath_room_app/presantion/auth/reset_password_screen.dart';
 import 'package:bath_room_app/presantion/auth/sginup_screen.dart';
@@ -10,11 +11,11 @@ import '../../presantion/auth/login_screen.dart';
 class Routes {
   static const createAccount = '/create-account';
   static const login = '/login';
-  // static const create = '/create';
   static const home = '/home';
   static const reviews = '/reviews';
   static const resetPassword = '/reset_password';
   static const forgetPassword = '/forget_password';
+  static const deleteAccount = '/delete_account';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -35,6 +36,9 @@ class Routes {
 
       case forgetPassword:
         return MaterialPageRoute(builder: (_) => const ResetPasswordEmail());
+
+      case deleteAccount:
+        return MaterialPageRoute(builder: (_) => const DeleteAccountScreen());
 
       default:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
