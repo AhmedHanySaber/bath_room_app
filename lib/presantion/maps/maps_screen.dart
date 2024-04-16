@@ -88,8 +88,8 @@ class MapsScreenState extends State<MapsScreen> {
             showLocationDetails(
               context,
               location: location,
-              isCafe: location.instantCoffee == true &&
-                  location.alternateOptions == false,
+              isCafe: location.instantCoffee == true,
+              isBathroom: location.alternateOptions ?? false,
             );
           });
     }).toSet();

@@ -7,7 +7,6 @@ import 'package:bath_room_app/presantion/profile/widgets/review_widget.dart';
 import 'package:bath_room_app/presantion/widgets/custom_show_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../core/colors/colours.dart';
 import '../../../core/network/app_constants.dart';
@@ -19,6 +18,7 @@ void showLocationDetails(
   BuildContext context, {
   required LocationModel location,
   required bool isCafe,
+  required bool isBathroom,
 }) {
   showModalBottomSheet(
     scrollControlDisabledMaxHeightRatio: .8,
@@ -45,7 +45,11 @@ void showLocationDetails(
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Image.asset(
-                          isCafe ? AppConstants.image2 : AppConstants.image1,
+                          isCafe && isBathroom == true
+                              ? AppConstants.image3
+                              : isCafe == true
+                                  ? AppConstants.image2
+                                  : AppConstants.image1,
                           height: 60,
                         ),
                       ),
@@ -145,7 +149,7 @@ void showLocationDetails(
                     ),
                     InkWell(
                       onTap: () {
-                        if (AppConstants.userId != '') {
+                        if (AppConstants.token != '') {
                           showAddReviewDetails(context, location);
                         } else {
                           showCustomDialog(

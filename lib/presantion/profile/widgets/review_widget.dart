@@ -1,14 +1,12 @@
 import 'package:bath_room_app/core/controllers/reviews/reviews_controller.dart';
 import 'package:bath_room_app/core/network/app_constants.dart';
 import 'package:bath_room_app/models/review_models/review_model.dart';
-import 'package:bath_room_app/presantion/widgets/custom_show_dialog.dart';
 import 'package:bath_room_app/presantion/widgets/rating_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/colors/colours.dart';
-import '../../widgets/snak_bar.dart';
 
 class Review extends StatelessWidget {
   final ReviewModel reviewModel;

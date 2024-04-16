@@ -33,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    'App',
+                    'Bean',
                     style: TextStyle(
                       fontSize: 60,
                       fontWeight: FontWeight.bold,
@@ -41,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Name',
+                    'Break',
                     style: TextStyle(
                       fontSize: 60,
                       fontWeight: FontWeight.bold,
@@ -146,16 +146,15 @@ class WelcomeScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 elevation: 10,
                 fixedSize: const Size(230, 60),
-                // foregroundColor: textfilledColor,
-                // backgroundColor: buttonColor1,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25.0),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 'Sign In',
                 style: TextStyle(
                   fontSize: 22,
+                  color: ConstantsColors.navigationColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -177,7 +176,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

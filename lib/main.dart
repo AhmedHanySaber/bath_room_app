@@ -1,8 +1,9 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:bath_room_app/core/controllers/auth/auth_controller.dart';
 import 'package:bath_room_app/core/controllers/location/location_controller.dart';
 import 'package:bath_room_app/core/controllers/reviews/reviews_controller.dart';
 import 'package:bath_room_app/core/network/app_constants.dart';
-import 'package:bath_room_app/presantion/auth/login_screen.dart';
 import 'package:bath_room_app/presantion/auth/onboarding.dart';
 import 'package:bath_room_app/presantion/home/widgets/navigation.dart';
 import 'package:flutter/material.dart';
@@ -49,24 +50,47 @@ class _MyAppState extends State<MyApp> {
           lazy: true,
         ),
         ChangeNotifierProvider(
-          create: (context) =>
-          di.sl<LocationController>()..getAllLocations(context),
+          create: (context) => di.sl<LocationController>(),
         ),
         ChangeNotifierProvider(
           create: (context) =>
-          di.sl<ReviewsController>()..getMyReviews(context),
+              di.sl<ReviewsController>()..getMyReviews(context),
           lazy: true,
         ),
       ],
       child: MaterialApp(
-        title: 'coffee bathroom',
+        title: 'Bean Break',
         theme: ThemeData(
           scaffoldBackgroundColor: ConstantsColors.background,
         ),
         onGenerateRoute: Routes.onGenerateRoute,
-        home: AppConstants.token != ""
-            ? const NavigationBarConfig()
-            : const WelcomeScreen(),
+        home: AnimatedSplashScreen(
+          backgroundColor: ConstantsColors.background,
+          splashIconSize: 200,
+          splash: Column(
+            children: [
+              Image.asset(
+                'assets/beens.png',
+                height: 100,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "BeanBreak",
+                style: TextStyle(
+                  fontSize: 40,
+                  color: ConstantsColors.navigationColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          nextScreen: AppConstants.token != ""
+              ? const NavigationBarConfig()
+              : const WelcomeScreen(),
+          splashTransition: SplashTransition.fadeTransition,
+          pageTransitionType: PageTransitionType.fade,
+          duration: 3000,
+        ),
       ),
     );
   }

@@ -58,12 +58,12 @@ class LocationController extends ChangeNotifier {
   }
 
   Future<List<LocationModel>?> getAllFavorites(BuildContext context) async {
-   await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     try {
       final res = await apiService.get(
         url: "${AppConstants.GET_MY_FAVORITES}${AppConstants.userId}",
       );
-      List<dynamic> data = res ;
+      List<dynamic> data = res;
 
       final List<LocationModel> list = [];
 
@@ -107,7 +107,7 @@ class LocationController extends ChangeNotifier {
       );
 
       final location =
-      locationsList.firstWhere((element) => element.id == locationId);
+          locationsList.firstWhere((element) => element.id == locationId);
       myFavoritesNotifier.value.add(location);
       notifyListeners();
       return true;
@@ -116,9 +116,17 @@ class LocationController extends ChangeNotifier {
         if (e.response!.statusCode == 500) {
           showSnackBar(context, text: e.response.toString(), color: Colors.red);
         }
+        showSnackBar(
+          context,
+          text: ServerFailure.getMessage(e.response!.statusCode) ??
+              "something went wrong, please try again later",
+          color: Colors.red,
+        );
         return false;
       } else {
-        showSnackBar(context, text: e.toString(), color: Colors.red);
+        showSnackBar(context,
+            text: "something went wrong, please try again later",
+            color: Colors.red);
         return false;
       }
     }
@@ -138,7 +146,7 @@ class LocationController extends ChangeNotifier {
         color: Colors.green,
       );
       final location =
-      locationsList.firstWhere((element) => element.id == locationId);
+          locationsList.firstWhere((element) => element.id == locationId);
       myFavoritesNotifier.value.remove(location);
       notifyListeners();
 
@@ -148,9 +156,17 @@ class LocationController extends ChangeNotifier {
         if (e.response!.statusCode == 500) {
           showSnackBar(context, text: e.response.toString(), color: Colors.red);
         }
+        showSnackBar(
+          context,
+          text: ServerFailure.getMessage(e.response!.statusCode) ??
+              "something went wrong, please try again later",
+          color: Colors.red,
+        );
         return false;
       } else {
-        showSnackBar(context, text: e.toString(), color: Colors.red);
+        showSnackBar(context,
+            text: "something went wrong, please try again later",
+            color: Colors.red);
         return false;
       }
     }
@@ -171,11 +187,19 @@ class LocationController extends ChangeNotifier {
     } catch (e) {
       if (e is DioException) {
         if (e.response!.statusCode == 500) {
-          showSnackBar(context, text: e.response.toString(), color: Colors.red);
+          showSnackBar(
+            context,
+            text: e.response.toString(),
+            color: Colors.red,
+          );
         }
         return null;
       } else {
-        showSnackBar(context, text: e.toString(), color: Colors.red);
+        showSnackBar(
+          context,
+          text: "something went wrong, please try again later",
+          color: Colors.red,
+        );
         return null;
       }
     }
@@ -201,9 +225,16 @@ class LocationController extends ChangeNotifier {
         if (e.response!.statusCode == 500) {
           showSnackBar(context, text: e.response.toString(), color: Colors.red);
         }
-        showSnackBar(context, text: e.message!, color: Colors.red);
+        showSnackBar(
+          context,
+          text: ServerFailure.getMessage(e.response!.statusCode) ??
+              "something went wrong, please try again later",
+          color: Colors.red,
+        );
       } else {
-        showSnackBar(context, text: e.toString(), color: Colors.red);
+        showSnackBar(context,
+            text: "something went wrong, please try again later",
+            color: Colors.red);
       }
     }
   }

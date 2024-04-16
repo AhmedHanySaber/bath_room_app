@@ -72,44 +72,46 @@ class _AddToMapScreenState extends State<AddToMapScreen> {
               context,
               location: location,
               isCafe: location.instantCoffee ?? false,
+              isBathroom: location.alternateOptions ?? false,
             );
           });
     }).toSet();
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
-      child: Stack(children: [
-        GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: _kGooglePlex,
-          markers: markers,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-          onLongPress: (latLog) {
-            if (AppConstants.token != '') {
-              showAddLocationDetails(context, latLog);
-            } else {
-              showCustomDialog(
-                context,
-                title: "Unauthorized",
-                body: "please login to access the add review feature",
-                actionName: "login",
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    Routes.login,
-                    (route) => false,
-                  );
-                },
-              );
-            }
-          },
-        ),
-        Positioned(
-          top: 50,
-          right: 20,
-          left: 20,
-          child: ValueListenableBuilder<bool>(
+      child: Stack(
+        children: [
+          GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _kGooglePlex,
+            markers: markers,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+            onLongPress: (latLog) {
+              if (AppConstants.token != '') {
+                showAddLocationDetails(context, latLog);
+              } else {
+                showCustomDialog(
+                  context,
+                  title: "Unauthorized",
+                  body: "please login to access the add location feature",
+                  actionName: "login",
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Routes.login,
+                      (route) => false,
+                    );
+                  },
+                );
+              }
+            },
+          ),
+          Positioned(
+            top: 50,
+            right: 20,
+            left: 20,
+            child: ValueListenableBuilder<bool>(
               valueListenable: LocationController.closedNotifier,
               builder: (context, isClosed, _) {
                 return isClosed == false
@@ -151,9 +153,11 @@ class _AddToMapScreenState extends State<AddToMapScreen> {
                         ),
                       )
                     : const SizedBox();
-              }),
-        ),
-      ]),
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -18,6 +18,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    Provider.of<LocationController>(context)
+        .getAllLocations(context)
+        .then((value) {
+      Provider.of<LocationController>(context, listen: false)
+          .getAllFavorites(context);
+    });
     return Scaffold(
       backgroundColor: ConstantsColors.backgroundColor3,
       body: SafeArea(
@@ -32,11 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 150,
                   ),
                   const SizedBox(
-                    width: 40,
+                    width: 20,
                   ),
                   Flexible(
                     child: Text(
-                      "APP NAME?",
+                      "BeanBreak",
                       style: TextStyle(
                           fontSize: 40,
                           color: ConstantsColors.navigationColor,
@@ -82,6 +88,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             valueListenable:
                                 LocationController.locationsNotifier,
                             builder: (context, locations, _) {
+                              if (locations.isEmpty) {
+                                return SizedBox(
+                                  height:
+                                  MediaQuery.of(context).size.height * .18,
+                                  child: Center(
+                                      child: Text(
+                                        "There's nothing here",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: ConstantsColors.navigationColor,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                );
+                              }
                               return SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * .18,
@@ -111,6 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                             isCafe: homeController
                                                     .selectedLocation!
                                                     .instantCoffee ??
+                                                false,
+                                            isBathroom: homeController
+                                                    .selectedLocation!
+                                                    .alternateOptions ??
                                                 false,
                                           );
                                           // Reset the selectedLocation in HomeController to null
@@ -159,7 +183,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(height: 10),
                       Consumer<LocationController>(
                           builder: (context, controller, _) {
-                        controller.getAllFavorites(context);
                         return ValueListenableBuilder<List<LocationModel>>(
                           valueListenable:
                               LocationController.myFavoritesNotifier,
@@ -202,6 +225,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           isCafe: homeController
                                                   .selectedLocation!
                                                   .instantCoffee ??
+                                              false,
+                                          isBathroom: homeController
+                                                  .selectedLocation!
+                                                  .alternateOptions ??
                                               false,
                                         );
                                         // Reset the selectedLocation in HomeController to null

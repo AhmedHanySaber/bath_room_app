@@ -101,10 +101,17 @@ class ReviewsController extends ChangeNotifier {
         if (e.response!.statusCode == 500) {
           showSnackBar(context, text: e.response.toString(), color: Colors.red);
         }
-        showSnackBar(context, text: e.message!, color: Colors.red);
+        showSnackBar(
+          context,
+          text: ServerFailure.getMessage(e.response!.statusCode) ??
+              "something went wrong, please try again later",
+          color: Colors.red,
+        );
         return false;
       } else {
-        showSnackBar(context, text: e.toString(), color: Colors.red);
+        showSnackBar(context,
+            text: "something went wrong, please try again later",
+            color: Colors.red);
         return false;
       }
     }
@@ -134,13 +141,19 @@ class ReviewsController extends ChangeNotifier {
         if (e.response!.statusCode == 500) {
           showSnackBar(context, text: e.response.toString(), color: Colors.red);
         }
+        showSnackBar(
+          context,
+          text: ServerFailure.getMessage(e.response!.statusCode) ??
+              "something went wrong, please try again later",
+          color: Colors.red,
+        );
+        return false;
+      } else {
         showSnackBar(context,
-            text: "===========>${e.message!}",
-            color: Colors.red,
-            duration: const Duration(seconds: 20));
+            text: "something went wrong, please try again later",
+            color: Colors.red);
         return false;
       }
-      return false;
     }
   }
 

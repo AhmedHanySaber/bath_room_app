@@ -14,9 +14,9 @@ class ReviewsScreen extends StatefulWidget {
 }
 
 class _ReviewsScreenState extends State<ReviewsScreen> {
-
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -27,14 +27,14 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 children: [
                   Image.asset(
                     "assets/beens.png",
-                    height: 150,
+                    height: size.height * .173,
                   ),
-                  const SizedBox(
-                    width: 40,
+                  SizedBox(
+                    width: size.width * .049,
                   ),
                   Flexible(
                     child: Text(
-                      "APP NAME?",
+                      "BeanBreak",
                       style: TextStyle(
                           fontSize: 40,
                           color: ConstantsColors.navigationColor,
@@ -60,31 +60,44 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
             ),
             const SizedBox(height: 10),
             Consumer<ReviewsController>(
-              builder: (context, controller,_) {
+              builder: (context, controller, _) {
                 return Expanded(
                   child: ValueListenableBuilder<List<ReviewModel>>(
-                      valueListenable: ReviewsController.myReviewsNotifier,
-                      builder: (context, listner, _) {
-                        print(listner.length);
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: GridView.builder(
-                            itemCount: listner.length,
-                            gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 8,
-                              mainAxisSpacing: 8,
-                              childAspectRatio: .68,
+                    valueListenable: ReviewsController.myReviewsNotifier,
+                    builder: (context, listner, _) {
+                      print(listner.length);
+                      if (listner.isEmpty) {
+                        print("object");
+                        return Center(
+                          child: Text(
+                            "There's nothing here",
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: ConstantsColors.navigationColor,
+                              fontWeight: FontWeight.bold,
                             ),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Review(
-                                reviewModel: listner[index],
-                              );
-                            },
                           ),
                         );
-                      }),
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: GridView.builder(
+                          itemCount: listner.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                            childAspectRatio: .68,
+                          ),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Review(
+                              reviewModel: listner[index],
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),

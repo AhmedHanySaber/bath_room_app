@@ -1,7 +1,5 @@
 import 'package:bath_room_app/core/colors/colours.dart';
-import 'package:bath_room_app/core/network/app_constants.dart';
 import 'package:bath_room_app/core/routing/router.dart';
-import 'package:bath_room_app/presantion/auth/login_screen.dart';
 import 'package:bath_room_app/presantion/widgets/snak_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +25,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -41,10 +40,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   Row(
                     children: [
                       Image.asset(
-                        AppConstants.imageBeens,
-                        height: 150,
+                        "assets/beens.png",
+                        height: size.height * .173,
                       ),
-                      const SizedBox(width: 40),
+                      SizedBox(
+                        width: size.width * .049,
+                      ),
                       Flexible(
                         child: Text(
                           "CREATE ACCOUNT",
@@ -168,7 +169,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   ),
                   CustomButton(
                     text: "Create account",
-                    width: 200,
+                    width: size.width * .51,
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
@@ -181,8 +182,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         if (res) {
                           Navigator.pushNamed(context, Routes.login);
                           showSnackBar(context,
-                              text: "user created successfully",
-                              color: Colors.green);
+                              text:
+                                  "user created successfully, please check your mail for verification process",
+                              color: Colors.green,
+                              duration: const Duration(seconds: 6));
                         } else {
                           showSnackBar(context,
                               text: "something went wrong", color: Colors.red);
@@ -193,7 +196,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   const SizedBox(height: 30),
                   CustomButton(
                     text: "LOGIN",
-                    width: 200,
+                    width: size.width * .51,
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, Routes.login);
                     },

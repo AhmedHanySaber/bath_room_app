@@ -43,6 +43,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size =MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -53,14 +54,14 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                 children: [
                   Image.asset(
                     "assets/beens.png",
-                    height: 150,
+                    height: size.height*.173,
                   ),
-                  const SizedBox(
-                    width: 40,
+                  SizedBox(
+                    width: size.width*.049,
                   ),
                   Flexible(
                     child: Text(
-                      "APP NAME?",
+                      "BeanBreak",
                       style: TextStyle(
                           fontSize: 40,
                           color: ConstantsColors.navigationColor,
@@ -99,7 +100,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
               text: "Cancel",
               color: ConstantsColors.navigationColor,
               textColor: Colors.white,
-              width: 210,
+              width: size.width*.51,
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -113,7 +114,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                     text: "Delete Permanent",
                     color: Colors.red.shade800,
                     textColor: Colors.white,
-                    width: 210,
+                    width: size.width*.51,
                     // onPressed: reset,
                   ),
             const SizedBox(

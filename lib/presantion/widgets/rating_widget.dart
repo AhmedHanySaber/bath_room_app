@@ -20,12 +20,6 @@ List<Widget> buildRatingImages(
   for (int i = 0; i < remain; i++) {
     widgets.add(Image.asset(ratingRemainPath, height: 20));
   }
-
-  // int emptyStars = totalStars - fullStars - (hasHalfStar ? 1 : 0);
-  // for (int i = 0; i < emptyStars; i++) {
-  //   widgets.add(Image.asset("assets/empty_star.png", height: 20)); // Replace with your empty star asset
-  // }
-
   return widgets;
 }
 
@@ -53,9 +47,7 @@ class AddRatingIndex extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-                color: color,
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
+                color: color, fontWeight: FontWeight.bold, fontSize: 15),
           ),
           AnimatedRatingStars(
             initialRating: 1.0,
@@ -71,7 +63,7 @@ class AddRatingIndex extends StatelessWidget {
             customFilledIcon: FontAwesomeIcons.mugSaucer,
             customEmptyIcon: FontAwesomeIcons.mugSaucer,
             customHalfFilledIcon: FontAwesomeIcons.mugSaucer,
-            starSize: 12,
+            starSize: 18,
             animationDuration: const Duration(milliseconds: 300),
             animationCurve: Curves.bounceIn,
             readOnly: false,

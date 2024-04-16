@@ -101,10 +101,10 @@ class AuthController extends ChangeNotifier {
           showSnackBar(context, text: e.response.toString(), color: Colors.red);
         }
         showSnackBar(context,
-            text: e.message ?? "something went wrong", color: Colors.red);
+            text: e.response!.data.toString().isEmpty ? "user not found":"something went wrong", color: Colors.red);
         return null;
       } else {
-        showSnackBar(context, text: e.toString(), color: Colors.red);
+        showSnackBar(context, text: "user not found or password may not correct", color: Colors.red);
         return null;
       }
     }
@@ -154,12 +154,12 @@ class AuthController extends ChangeNotifier {
     } catch (e) {
       if (e is DioException) {
         if (e.response!.statusCode == 500) {
-          showSnackBar(context, text: e.response.toString(), color: Colors.red);
+          showSnackBar(context, text: "something went wrong", color: Colors.red);
         }
         showSnackBar(context,
             text: e.message ?? "something went wrong", color: Colors.red);
       } else {
-        showSnackBar(context, text: e.toString(), color: Colors.red);
+        showSnackBar(context, text: "something went wrong", color: Colors.red);
       }
       return false;
     }

@@ -1,4 +1,5 @@
 import 'package:bath_room_app/core/controllers/reviews/reviews_controller.dart';
+import 'package:bath_room_app/core/network/app_constants.dart';
 import 'package:bath_room_app/models/locations_model/location_model.dart';
 import 'package:bath_room_app/presantion/widgets/rating_widget.dart';
 import 'package:bath_room_app/presantion/widgets/snak_bar.dart';
@@ -22,12 +23,26 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
             child: Wrap(
               alignment: WrapAlignment.center,
               children: <Widget>[
-                Text(
-                  locationModel.name!,
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: ConstantsColors.navigationColor2),
+                Row(
+                  children: [
+                    Image.asset(
+                      locationModel.instantCoffee == true &&
+                              locationModel.alternateOptions == true
+                          ? AppConstants.image3
+                          : locationModel.instantCoffee == true
+                              ? AppConstants.image2
+                              : AppConstants.image1,
+                      height: 60,
+                    ),
+                    const SizedBox(width: 20),
+                    Text(
+                      locationModel.name!,
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: ConstantsColors.navigationColor2),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
                 Padding(
@@ -50,7 +65,8 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                               Text(
                                 "Coffee type:",
                                 style: TextStyle(
-                                    color: ConstantsColors.bottomSheetBackGround,
+                                    color:
+                                        ConstantsColors.bottomSheetBackGround,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ),
@@ -58,7 +74,8 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                               Row(
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Row(
@@ -67,12 +84,14 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                                             onTap: () {
                                               controller
                                                   .handleInstantCoffeeSelected(
-                                                      !controller.instantCoffee);
+                                                      !controller
+                                                          .instantCoffee);
                                             },
                                             child: Icon(
                                               controller.instantCoffee
                                                   ? Icons.check_box
-                                                  : Icons.check_box_outline_blank,
+                                                  : Icons
+                                                      .check_box_outline_blank,
                                               color: ConstantsColors
                                                   .bottomSheetBackGround,
                                             ),
@@ -99,7 +118,8 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                                             child: Icon(
                                               controller.groundCoffee
                                                   ? Icons.check_box
-                                                  : Icons.check_box_outline_blank,
+                                                  : Icons
+                                                      .check_box_outline_blank,
                                               color: ConstantsColors
                                                   .bottomSheetBackGround,
                                             ),
@@ -129,7 +149,8 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                                             child: Icon(
                                               controller.alternativeOptions
                                                   ? Icons.check_box
-                                                  : Icons.check_box_outline_blank,
+                                                  : Icons
+                                                      .check_box_outline_blank,
                                               color: ConstantsColors
                                                   .bottomSheetBackGround,
                                             ),
@@ -148,7 +169,8 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                                     ],
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Row(
@@ -161,7 +183,8 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                                             child: Icon(
                                               controller.sitDown
                                                   ? Icons.check_box
-                                                  : Icons.check_box_outline_blank,
+                                                  : Icons
+                                                      .check_box_outline_blank,
                                               color: ConstantsColors
                                                   .bottomSheetBackGround,
                                             ),
@@ -189,7 +212,8 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                                             child: Icon(
                                               controller.keyRequired
                                                   ? Icons.check_box
-                                                  : Icons.check_box_outline_blank,
+                                                  : Icons
+                                                      .check_box_outline_blank,
                                               color: ConstantsColors
                                                   .bottomSheetBackGround,
                                             ),
@@ -209,13 +233,16 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                              controller.handleWheelChairSelected(
-                                                  !controller.wheelchairFriendly);
+                                              controller
+                                                  .handleWheelChairSelected(
+                                                      !controller
+                                                          .wheelchairFriendly);
                                             },
                                             child: Icon(
                                               controller.wheelchairFriendly
                                                   ? Icons.check_box
-                                                  : Icons.check_box_outline_blank,
+                                                  : Icons
+                                                      .check_box_outline_blank,
                                               color: ConstantsColors
                                                   .bottomSheetBackGround,
                                             ),
@@ -251,9 +278,9 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                     children: [
                       AddRatingIndex(
                         title: "Price: ",
-                        index:
-                            Provider.of<ReviewsController>(context, listen: false)
-                                .priceRating,
+                        index: Provider.of<ReviewsController>(context,
+                                listen: false)
+                            .priceRating,
                         onChanged: (value) {
                           Provider.of<ReviewsController>(context, listen: false)
                               .priceRating = value;
@@ -261,9 +288,9 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                       ),
                       AddRatingIndex(
                         title: "selection: ",
-                        index:
-                            Provider.of<ReviewsController>(context, listen: false)
-                                .selectionRating,
+                        index: Provider.of<ReviewsController>(context,
+                                listen: false)
+                            .selectionRating,
                         onChanged: (value) {
                           Provider.of<ReviewsController>(context, listen: false)
                               .selectionRating = value;
@@ -271,9 +298,9 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                       ),
                       AddRatingIndex(
                         title: "taste: ",
-                        index:
-                            Provider.of<ReviewsController>(context, listen: false)
-                                .tasteRating,
+                        index: Provider.of<ReviewsController>(context,
+                                listen: false)
+                            .tasteRating,
                         onChanged: (value) {
                           Provider.of<ReviewsController>(context, listen: false)
                               .tasteRating = value;
@@ -281,9 +308,9 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                       ),
                       AddRatingIndex(
                         title: "friendliness: ",
-                        index:
-                            Provider.of<ReviewsController>(context, listen: false)
-                                .friendlinessRating,
+                        index: Provider.of<ReviewsController>(context,
+                                listen: false)
+                            .friendlinessRating,
                         onChanged: (value) {
                           Provider.of<ReviewsController>(context, listen: false)
                               .friendlinessRating = value;
@@ -291,9 +318,9 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                       ),
                       AddRatingIndex(
                         title: "cleanliness: ",
-                        index:
-                            Provider.of<ReviewsController>(context, listen: false)
-                                .cleanlinessRating,
+                        index: Provider.of<ReviewsController>(context,
+                                listen: false)
+                            .cleanlinessRating,
                         onChanged: (value) {
                           Provider.of<ReviewsController>(context, listen: false)
                               .cleanlinessRating = value;
@@ -301,9 +328,9 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                       ),
                       AddRatingIndex(
                         title: "accessibility: ",
-                        index:
-                            Provider.of<ReviewsController>(context, listen: false)
-                                .accessibilityRating,
+                        index: Provider.of<ReviewsController>(context,
+                                listen: false)
+                            .accessibilityRating,
                         onChanged: (value) {
                           Provider.of<ReviewsController>(context, listen: false)
                               .accessibilityRating = value;
@@ -311,9 +338,9 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                       ),
                       AddRatingIndex(
                         title: "supplies: ",
-                        index:
-                            Provider.of<ReviewsController>(context, listen: false)
-                                .suppliesRating,
+                        index: Provider.of<ReviewsController>(context,
+                                listen: false)
+                            .suppliesRating,
                         onChanged: (value) {
                           Provider.of<ReviewsController>(context, listen: false)
                               .suppliesRating = value;
@@ -321,9 +348,9 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                       ),
                       AddRatingIndex(
                         title: "safety: ",
-                        index:
-                            Provider.of<ReviewsController>(context, listen: false)
-                                .safetyRating,
+                        index: Provider.of<ReviewsController>(context,
+                                listen: false)
+                            .safetyRating,
                         onChanged: (value) {
                           Provider.of<ReviewsController>(context, listen: false)
                               .safetyRating = value;
@@ -335,7 +362,8 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                 Consumer<ReviewsController>(
                   builder: (context, controller, _) {
                     return ValueListenableBuilder<Map<String, dynamic>>(
-                        valueListenable: ReviewsController.reviewsValuesNotifier,
+                        valueListenable:
+                            ReviewsController.reviewsValuesNotifier,
                         builder: (context, entity, _) {
                           return CustomButton(
                             text: "Add Review",
@@ -353,12 +381,14 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                                       entity["alternate_options"] ?? false,
                                   "sit_down": entity["sit_down"] ?? false,
                                   "is_free": false,
-                                  "key_required": entity["key_required"] ?? false,
+                                  "key_required":
+                                      entity["key_required"] ?? false,
                                   "wheelchair_friendly":
                                       entity["wheelchair_friendly"] ?? false,
                                   "price_rating": controller.priceRating,
                                   "taste_rating": controller.tasteRating,
-                                  "selection_rating": controller.selectionRating,
+                                  "selection_rating":
+                                      controller.selectionRating,
                                   "friendliness_rating":
                                       controller.friendlinessRating,
                                   "cleanliness_rating":
@@ -374,12 +404,12 @@ void showAddReviewDetails(BuildContext context, LocationModel locationModel) {
                                 showSnackBar(context,
                                     text: "review added successfully",
                                     color: Colors.green);
-            
+
                                 /// after making a review we must reset every value
                                 /// in the controller
                                 /// because every variable will be storied with
-                                /// the last value in it so we have to reset this values
-            
+                                /// the last value in it so we have to reset these values
+
                                 controller.instantCoffee = false;
                                 controller.groundCoffee = false;
                                 controller.alternativeOptions = false;

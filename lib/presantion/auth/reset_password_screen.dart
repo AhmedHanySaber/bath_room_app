@@ -41,6 +41,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -54,14 +55,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     children: [
                       Image.asset(
                         "assets/beens.png",
-                        height: 150,
+                        height: size.height * .173,
                       ),
-                      const SizedBox(
-                        width: 40,
+                      SizedBox(
+                        width: size.width * .049,
                       ),
                       Flexible(
                         child: Text(
-                          "APP NAME?",
+                          "BeanBreak",
                           style: TextStyle(
                               fontSize: 40,
                               color: ConstantsColors.navigationColor,
@@ -168,7 +169,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 const SizedBox(height: 60),
                 CustomButton(
                   text: "Reset Password",
-                  width: 210,
+                  width: size.width * .51,
                   onPressed: reset,
                 )
               ],
