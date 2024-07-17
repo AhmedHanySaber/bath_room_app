@@ -12,7 +12,7 @@ import '../../../core/colors/colours.dart';
 Future<String?> geo(LatLng latLng) async {
   try {
     List<Placemark> placemarks =
-    await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+        await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
     Placemark place = placemarks[0];
     String address = '${place.locality}, ${place.country}';
     print(address);
@@ -46,7 +46,19 @@ class _AddLocationFormState extends State<AddLocationForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _desController = TextEditingController();
+  String _address = '';
 
+  @override
+  void initState() {
+    super.initState();
+    _getAddress();
+  }
+  Future<void> _getAddress() async {
+    final address = await geo(widget.latLng);
+    setState(() {
+      _address = address ?? 'Address not found';
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -74,6 +86,30 @@ class _AddLocationFormState extends State<AddLocationForm> {
                       validator: validateName,
                       prefixIcon: Icons.add_business_rounded),
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: ConstantsColors.navigationColor, width: 2
+                      ),
+                        color: ConstantsColors.navigationColor2,
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    child:  Center(
+                      child: Text(
+                        _address,
+                        style: TextStyle(
+                          color: ConstantsColors.bottomSheetBackGround,
+                          fontSize: 16,
+                          fontWeight:FontWeight.w700 ,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: CustomTextField(
@@ -117,16 +153,32 @@ class _AddLocationFormState extends State<AddLocationForm> {
                                   "longitude": widget.latLng.longitude,
                                   "location_description": address,
                                   "description": _desController.text,
-                                  "instant_coffee": entity["instant_coffee"] ?? false,
-                                  "ground_coffee": entity["ground_coffee"] ?? false,
-                                  "alternate_options": entity["alternative_options"] ?? false,
+                                  "instant_coffee":
+                                      controller.instantCoffeeSelected,
+                                  "ground_coffee":
+                                      controller.groundCoffeeSelected,
+                                  "alternative_options":
+                                      controller.alternativeOptionsSelected,
+                                  "key_required": controller.keyRequired,
+                                  "is_free": controller.isFree,
+                                  "wheelchair_friendly":
+                                      controller.wheelchairFriendly,
                                   "price_rating": controller.priceRating,
                                   "taste_rating": controller.tasteRating,
-                                  "selection_rating": controller.selectionRating,
-                                  "friendliness_rating": controller.friendlinessRating,
+                                  "selection_rating":
+                                      controller.selectionRating,
+                                  "friendliness_rating":
+                                      controller.friendlinessRating,
+                                  "cleanliness_rating":
+                                      controller.cleanlinessRating,
+                                  "accessibility_rating":
+                                      controller.accessibilityRating,
+                                  "supplies_rating": controller.suppliesRating,
+                                  "safety_rating": controller.safetyRating,
                                 },
                               );
                               print("done");
+                              controller.reset();
                             }
                           },
                         );
@@ -142,6 +194,7 @@ class _AddLocationFormState extends State<AddLocationForm> {
     );
   }
 }
+
 class CoffeeTypeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -159,83 +212,166 @@ class CoffeeTypeSelector extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        controller.handleInstantCoffeeSelected(
-                            !controller.instantCoffeeSelected);
-                      },
-                      child: Icon(
-                        controller.instantCoffeeSelected
-                            ? Icons.check_box
-                            : Icons.check_box_outline_blank,
-                        color: ConstantsColors.bottomSheetBackGround,
-                      ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            controller.handleInstantCoffeeSelected(
+                                !controller.instantCoffeeSelected);
+                          },
+                          child: Icon(
+                            controller.instantCoffeeSelected
+                                ? Icons.check_box
+                                : Icons.check_box_outline_blank,
+                            color: ConstantsColors.bottomSheetBackGround,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Instant coffee",
+                          style: TextStyle(
+                              color: ConstantsColors.bottomSheetBackGround,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        )
+                      ],
                     ),
-                    const SizedBox(width: 5),
-                    Text(
-                      "Instant coffee",
-                      style: TextStyle(
-                          color: ConstantsColors.bottomSheetBackGround,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            controller.handleGroundCoffeeSelected(
+                                !controller.groundCoffeeSelected);
+                          },
+                          child: Icon(
+                            controller.groundCoffeeSelected
+                                ? Icons.check_box
+                                : Icons.check_box_outline_blank,
+                            color: ConstantsColors.bottomSheetBackGround,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Ground coffee",
+                          style: TextStyle(
+                              color: ConstantsColors.bottomSheetBackGround,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            controller.handleAlternativeOptionsSelected(
+                                !controller.alternativeOptionsSelected);
+                          },
+                          child: Icon(
+                            controller.alternativeOptionsSelected
+                                ? Icons.check_box
+                                : Icons.check_box_outline_blank,
+                            color: ConstantsColors.bottomSheetBackGround,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Alternative options",
+                          style: TextStyle(
+                              color: ConstantsColors.bottomSheetBackGround,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        )
+                      ],
+                    ),
                   ],
                 ),
-                Row(
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.1,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        controller.handleGroundCoffeeSelected(
-                            !controller.groundCoffeeSelected);
-                      },
-                      child: Icon(
-                        controller.groundCoffeeSelected
-                            ? Icons.check_box
-                            : Icons.check_box_outline_blank,
-                        color: ConstantsColors.bottomSheetBackGround,
-                      ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            controller.handleKeyRequiredSelected(
+                                !controller.keyRequired);
+                          },
+                          child: Icon(
+                            controller.keyRequired
+                                ? Icons.check_box
+                                : Icons.check_box_outline_blank,
+                            color: ConstantsColors.bottomSheetBackGround,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Key required",
+                          style: TextStyle(
+                              color: ConstantsColors.bottomSheetBackGround,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        )
+                      ],
                     ),
-                    const SizedBox(width: 5),
-                    Text(
-                      "Ground coffee",
-                      style: TextStyle(
-                          color: ConstantsColors.bottomSheetBackGround,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            controller.handleIsFreeSelected(!controller.isFree);
+                          },
+                          child: Icon(
+                            controller.isFree
+                                ? Icons.check_box
+                                : Icons.check_box_outline_blank,
+                            color: ConstantsColors.bottomSheetBackGround,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Is free",
+                          style: TextStyle(
+                              color: ConstantsColors.bottomSheetBackGround,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            controller.handleWheelChairFriendlySelected(
+                                !controller.wheelchairFriendly);
+                          },
+                          child: Icon(
+                            controller.wheelchairFriendly
+                                ? Icons.check_box
+                                : Icons.check_box_outline_blank,
+                            color: ConstantsColors.bottomSheetBackGround,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Wheelchair friendly",
+                          style: TextStyle(
+                              color: ConstantsColors.bottomSheetBackGround,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        )
+                      ],
+                    ),
                   ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    controller.handleAlternativeOptionsSelected(
-                        !controller.alternativeOptionsSelected);
-                  },
-                  child: Icon(
-                    controller.alternativeOptionsSelected
-                        ? Icons.check_box
-                        : Icons.check_box_outline_blank,
-                    color: ConstantsColors.bottomSheetBackGround,
-                  ),
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  "Alternative options",
-                  style: TextStyle(
-                      color: ConstantsColors.bottomSheetBackGround,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15),
                 )
               ],
             ),
+            const SizedBox(height: 10),
             const SizedBox(height: 10),
             Text(
               "Rating:",
@@ -276,10 +412,41 @@ class CoffeeTypeSelector extends StatelessWidget {
               title: "Friendliness:",
               color: ConstantsColors.bottomSheetBackGround,
             ),
+            AddRatingIndex(
+              index: controller.priceRating,
+              onChanged: (value) {
+                controller.cleanlinessRating = value;
+              },
+              title: "Cleanliness:",
+              color: ConstantsColors.bottomSheetBackGround,
+            ),
+            AddRatingIndex(
+              index: controller.tasteRating,
+              onChanged: (value) {
+                controller.accessibilityRating = value;
+              },
+              title: "Accessability :",
+              color: ConstantsColors.bottomSheetBackGround,
+            ),
+            AddRatingIndex(
+              index: controller.selectionRating,
+              onChanged: (value) {
+                controller.suppliesRating = value;
+              },
+              title: "Supplies :",
+              color: ConstantsColors.bottomSheetBackGround,
+            ),
+            AddRatingIndex(
+              index: controller.friendlinessRating,
+              onChanged: (value) {
+                controller.safetyRating = value;
+              },
+              title: "safty :",
+              color: ConstantsColors.bottomSheetBackGround,
+            ),
           ],
         );
       },
     );
   }
 }
-

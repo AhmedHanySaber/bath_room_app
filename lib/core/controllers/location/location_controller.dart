@@ -23,6 +23,9 @@ class LocationController extends ChangeNotifier {
   bool groundCoffeeSelected = false;
   bool alternativeOptionsSelected = false;
   bool isBannerAdReady = false;
+  bool isFree = false;
+  bool keyRequired = false;
+  bool wheelchairFriendly = false;
   double cleanlinessRating = 0.0;
   double accessibilityRating = 0.0;
   double suppliesRating = 0.0;
@@ -248,6 +251,21 @@ class LocationController extends ChangeNotifier {
     boolValuesNotifier.value.addAll({"instant_coffee": instantCoffeeSelected});
     notifyListeners();
   }
+  void handleKeyRequiredSelected(bool value) {
+    keyRequired = value;
+    boolValuesNotifier.value.addAll({"key_required": keyRequired});
+    notifyListeners();
+  }
+  void handleIsFreeSelected(bool value) {
+    isFree = value;
+    boolValuesNotifier.value.addAll({"is_free": isFree});
+    notifyListeners();
+  }
+  void handleWheelChairFriendlySelected(bool value) {
+    wheelchairFriendly = value;
+    boolValuesNotifier.value.addAll({"wheelchair_friendly": wheelchairFriendly});
+    notifyListeners();
+  }
 
   void handleGroundCoffeeSelected(bool value) {
     groundCoffeeSelected = value;
@@ -261,7 +279,23 @@ class LocationController extends ChangeNotifier {
         .addAll({"alternative_options": alternativeOptionsSelected});
     notifyListeners();
   }
-
+  void reset() {
+    instantCoffeeSelected = false;
+    groundCoffeeSelected = false;
+    alternativeOptionsSelected = false;
+    keyRequired = false;
+    isFree = false;
+    wheelchairFriendly = false;
+    priceRating = 0;
+    tasteRating = 0;
+    selectionRating = 0;
+    friendlinessRating = 0;
+    cleanlinessRating = 0;
+    accessibilityRating = 0;
+    suppliesRating = 0;
+    safetyRating = 0;
+    notifyListeners();
+  }
   bool checkFavorite({required String locationId}) {
     final x = _favoritesList.where((favorite) => favorite.id == locationId);
     return x.isNotEmpty;

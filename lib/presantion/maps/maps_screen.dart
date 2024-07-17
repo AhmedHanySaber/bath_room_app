@@ -96,7 +96,7 @@ class _MapsScreenState extends State<MapsScreen> {
   }
 
   BitmapDescriptor? _getMarkerIcon(LocationModel location) {
-    if (location.instantCoffee == true && location.alternateOptions == true) {
+    if (location.instantCoffee == true && location.keyRequired == true) {
       return bothIcon;
     } else if (location.instantCoffee == true) {
       return cafeIcon;
@@ -110,7 +110,7 @@ class _MapsScreenState extends State<MapsScreen> {
       context,
       location: location,
       isCafe: location.instantCoffee ?? false,
-      isBathroom: location.alternateOptions ?? false,
+      isBathroom: location.keyRequired ?? false,
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:bath_room_app/presantion/widgets/custom_show_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../core/colors/colours.dart';
 import '../../../core/network/app_constants.dart';
 import '../../../models/locations_model/location_model.dart';
@@ -30,18 +31,29 @@ void showLocationDetails(
       final reviewsProvider = Provider.of<ReviewsController>(context);
 
       reviewsProvider.getLocationReviews(context, locationId: location.id ?? "");
-
+      Widget display(){
+        if(location.instantCoffee==true&&location.isFree==true||location.keyRequired==true){
+          return Column(
+            children: [
+              coffePart(context, location, isCafe, isBathroom),
+              const SizedBox(height: 10),
+              bathroomPart(location),
+            ],
+          );
+        }
+        else if(location.instantCoffee==true){
+          return coffePart(context, location, isCafe, isBathroom);
+        }
+        else{
+          return  bathroomPart(location);
+        }
+      }
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: SingleChildScrollView(
-          child: Wrap(
-            children: <Widget>[
-              _buildHeader(context, location, isCafe, isBathroom),
-              const SizedBox(height: 20),
-              _buildDescription(location, isCafe),
-              const SizedBox(height: 10),
-              const SizedBox(height: 100, child: AdMobBanner()),
-              LocationInfoContainer(locationModel: location),
+          child: Column(
+            children: [
+              display(),
               _buildActionRow(context, locationProvider, location),
               _buildReviewsList(),
             ],
@@ -50,7 +62,35 @@ void showLocationDetails(
       );
     },
   );
+
 }
+Wrap coffePart(BuildContext context, LocationModel location, bool isCafe, bool isBathroom) {
+  return Wrap(
+    children: <Widget>[
+      _buildHeader(context, location, isCafe, isBathroom),
+      const SizedBox(height: 20),
+      _buildDescription(location, isCafe),
+      const SizedBox(height: 10),
+      const SizedBox(height: 100, child: AdMobBanner()),
+      LocationInfoContainer(locationModel: location),
+
+
+    ],
+  );
+}
+Wrap bathroomPart(LocationModel location) {
+  return Wrap(
+              children: <Widget>[
+
+                const SizedBox(height: 10),
+                const SizedBox(height: 100, child: AdMobBanner()),
+                LocationInfoContainer1(locationModel: location),
+
+              ],
+            );
+}
+
+
 
 
 Widget _buildHeader(BuildContext context, LocationModel location, bool isCafe, bool isBathroom) {
@@ -162,7 +202,14 @@ Widget _buildActionRow(BuildContext context, LocationController locationProvider
                 ? ConstantsColors.navigationColor2
                 : ConstantsColors.fillColor3,
           ),
+          onTap: () {
+            // Define the content to be shared
+            String content = "Check out this Spot!";
+            // Share the content using share_plus package
+            Share.share(content);
+          },
         ),
+
         InkWell(
           onTap: () {
             if (AppConstants.token.isNotEmpty) {
